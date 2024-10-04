@@ -1,9 +1,9 @@
 "use server";
 
 import Replicate from "replicate";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient } from "@/utils/supabase/admin";
 import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { nanoid } from "nanoid";
 import { redirect } from "next/navigation";
 import { getDomain } from "@/lib/utils";
@@ -42,7 +42,8 @@ export async function upload(previousState: any, formData: FormData) {
   const input = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/input/${user_id}/${key}`;
 
   const buffer = await image.arrayBuffer();
-  
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: storageData, error: storageError } = await supabaseAdmin.storage
     .from("input")
     .upload(`/${user_id}/${key}`, buffer, {
