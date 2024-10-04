@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
 import { UserDropdown } from "./user-dropdown";
@@ -58,8 +59,8 @@ export default function Navbar() {
       >
         <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
           <Link href="/" className="flex items-center font-display text-2xl">
-            <img
-              src="/logo.png"
+            <Image
+              src="/logo.webp"
               alt="Logo image of a chat bubble"
               width="191"
               height="191"

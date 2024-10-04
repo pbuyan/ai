@@ -33,19 +33,29 @@ type SignInDialogStore = {
 
 export const useSignInDialog = create<SignInDialogStore>((set) => ({
   open: false,
-  setOpen: (open) => set(() => ({ open: open })),
+  setOpen: (isOpen: boolean) => set({ open: isOpen }),
 }));
 
 export function SignInDialog() {
   const supabase = createClient();
   const [signInClicked, setSignInClicked] = useState(false);
 
-  const [open, setOpen] = useSignInDialog((s) => [s.open, s.setOpen]);
+//   const [open, setOpen] = useSignInDialog((s) => [s.open, s.setOpen]);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const { open, setOpen } = useSignInDialog();
+
+  const handleOpenDialog = () => {
+    setOpen(true); // Open the dialog
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false); // Close the dialog
+  };
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen} modal={true}>
+      <Dialog open={open} onOpenChange={handleOpenDialog} modal={true}>
         <DialogContent className="gap-0 overflow-hidden p-0 md:rounded-2xl">
           <DialogHeader className="items-center justify-center space-y-3 px-16 py-8">
             <a href="https://precedent.dev">
@@ -100,7 +110,7 @@ export function SignInDialog() {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={handleOpenDialog}>
       <DrawerContent className="rounded-t-2xl">
         <DrawerHeader className="flex flex-col items-center justify-center space-y-3 px-4 py-8">
           <a href="https://precedent.dev">
@@ -151,7 +161,7 @@ export function SignInDialog() {
 
         <DrawerFooter className="bg-muted">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" onClick={handleCloseDialog}>Cancel</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
