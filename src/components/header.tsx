@@ -18,7 +18,6 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, setUser } = useUser();
   const router = useRouter();
-  console.log("user: ", user);
 
   async function handleSignOut() {
     setUser(null);
@@ -33,6 +32,12 @@ export default function Header() {
           <span className="ml-2 text-xl font-semibold text-gray-900">ACME</span>
         </Link>
         <div className="flex items-center space-x-4">
+          <Link
+            href="/dialogue"
+            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          >
+            Dialogue
+          </Link>
           <Link
             href="/pricing"
             className="text-sm font-medium text-gray-700 hover:text-gray-900"
@@ -54,9 +59,9 @@ export default function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="flex flex-col gap-1">
                 <DropdownMenuItem className="cursor-pointer">
-                  <Link href="/dashboard" className="flex w-full items-center">
+                  <Link href="/settings" className="flex w-full items-center">
                     <Home className="mr-2 h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>Settings</span>
                   </Link>
                 </DropdownMenuItem>
                 <form action={handleSignOut} className="w-full">

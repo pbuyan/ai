@@ -2,15 +2,19 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { signToken, verifyToken } from "@/lib/auth/session";
 
-const protectedRoutes = ["/dashboard", "/settings"];
+const protectedRoutes = ["/dashboard", "/settings", "/dialogue"];
 console.log("protectedRoutes: ", protectedRoutes);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get("session");
-  const isProtectedRoute =
-    pathname.startsWith(protectedRoutes[0]) ||
-    pathname.startsWith(protectedRoutes[1]);
+
+  let isProtectedRoute;
+  protectedRoutes.map((route) => pathname.startsWith(route));
+
+  // const isProtectedRoute =
+  //   pathname.startsWith(protectedRoutes[0]) ||
+  //   pathname.startsWith(protectedRoutes[1]);
 
   console.log("protectedRoutes: ", protectedRoutes);
 
