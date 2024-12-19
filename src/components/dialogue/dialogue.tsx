@@ -1,6 +1,6 @@
 "use client";
 
-import { runAi } from "@/app/(dialogue)/actions";
+import { runOpenAi, runGoogleAi } from "@/app/(dialogue)/actions";
 import React, { MouseEvent, useState } from "react";
 
 export default function Dialogue({ teamData }: any) {
@@ -13,8 +13,6 @@ export default function Dialogue({ teamData }: any) {
     teamData.subscriptionStatus === "trialing" ||
     teamData.subscriptionStatus === "active";
 
-  console.log("teamData.subscriptionStatus: ", teamData.subscriptionStatus);
-
   const handleGenerateDialogue = async (e: MouseEvent) => {
     if (!topic) {
       setError("Please enter a topic.");
@@ -26,7 +24,7 @@ export default function Dialogue({ teamData }: any) {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await runAi(topic);
+      const data = await runGoogleAi(topic);
       console.log("data: ", data);
       setDialogue(data.text as string);
     } catch (err) {
@@ -49,7 +47,7 @@ export default function Dialogue({ teamData }: any) {
       <button
         onClick={handleGenerateDialogue}
         className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
-        disabled={loading || isGenerationAllowed}
+        disabled={loading || !isGenerationAllowed}
       >
         {loading ? "Generating..." : "Generate Dialogue"}
       </button>
