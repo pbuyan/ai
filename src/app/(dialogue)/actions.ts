@@ -53,8 +53,8 @@ export async function runGoogleAi(topic: string) {
     responseMimeType: "text/plain",
   };
 
-  const prompt = `You are an AI that generates short dialogues between two people on a given topic.Generate a short dialogue on the topic:
-    ${topic}`;
+  const prompt = `You are an AI that generates short dialogues between two people on a given topic. Generate a short dialogue on the topic:
+    ${topic}. Use reapl names`;
 
   const chatSession = model.startChat({
     generationConfig,
