@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 // import { Settings } from "./settings";
 import { getTeamForUser, getUser } from "@/lib/db/queries";
+import DialogueForm from "@/components/dialogue/dialogue-form";
 import Dialogue from "@/components/dialogue/dialogue";
+import { Button } from "@/components/ui/button";
 
 export default async function DialoguePage() {
   const user = await getUser();
@@ -16,5 +18,9 @@ export default async function DialoguePage() {
     throw new Error("Team not found");
   }
 
-  return <Dialogue teamData={teamData} />;
+  return (
+    <main>
+      <Dialogue teamData={teamData} />
+    </main>
+  );
 }
