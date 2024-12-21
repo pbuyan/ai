@@ -3,7 +3,7 @@
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export async function runOpenAi(topic: string) {
+export async function runOpenAi(topic: string, tone: string, language: string) {
   if (!topic) {
     return { error: "Topic is required" };
   }
@@ -13,13 +13,16 @@ export async function runOpenAi(topic: string) {
   });
 
   try {
+    console.log(
+      "prompt Open: ",
+      `You are an AI that generates short dialogues between two people on a given topic using ${tone} tone and in language with code: "${language}".`
+    );
     const completion = await configuration.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content:
-            "You are an AI that generates short dialogues between two people on a given topic.",
+          content: `You are an AI that generates short dialogues between two people on a given topic using ${tone} tone and in Russian language.`,
         },
         {
           role: "user",
@@ -38,7 +41,11 @@ export async function runOpenAi(topic: string) {
   }
 }
 
-export async function runGoogleAi(topic: string) {
+export async function runGoogleAi(
+  topic: string,
+  tone: string,
+  language: string
+) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
   const model = genAI.getGenerativeModel({
@@ -53,8 +60,10 @@ export async function runGoogleAi(topic: string) {
     responseMimeType: "text/plain",
   };
 
-  const prompt = `You are an AI that generates short dialogues between two people on a given topic. Generate a short dialogue on the topic:
-    ${topic}. Use reapl names`;
+  const prompt = `You are an AI that generates short dialogues in Russian between two people on a given topic. Generate a short dialogue in ${language} on the topic:
+    ${topic}. Use real names and ${tone} tone.`;
+
+  console.log("prompt: ", prompt);
 
   const chatSession = model.startChat({
     generationConfig,

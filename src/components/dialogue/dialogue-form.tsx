@@ -1,9 +1,9 @@
 "use client";
 
 import { runOpenAi, runGoogleAi } from "@/app/(dialogue)/actions";
-import React, { type ReactNode, useState } from "react";
+import React, { useState } from "react";
 import TopicList from "@/components/topics/topic-list";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import ToneList from "@/components/tones/tone-list";
@@ -13,12 +13,12 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { countries } from "@/components/countries/countries";
 
 const formSchema = z.object({
   topic: z.string().min(2, {
@@ -28,33 +28,21 @@ const formSchema = z.object({
   tone: z.string(),
 });
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
+export default function DialogueForm({
+  teamData,
+  onDialogueUpdate,
+  language,
+}: any) {
   const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
-  // const [dialogue, setDialogue] = useState("");
   const [loading, setLoading] = useState(false);
-  //   const [error, setError] = useState("");
-  // const {
-  //   handleSubmit,
-  //   control,
-  //   formState: { errors },
-  //   getValues,
-  //   setValue,
-  //   setError,
-  // } = useForm({
-  //   defaultValues: {
-  //     topic: "",
-  //     customTopic: "",
-  //     tone: "Warm",
-  //   },
-  // });
+  // const [language, setLanguage] = useState("en-US");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      topic: "Farewells",
+      topic: "",
       customTopic: "",
-      tone: "Warm",
+      tone: "Friendly and Approachable Warm",
     },
   });
 
@@ -75,9 +63,16 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
   const handleGenerateDialogue = async (data: {
     topic: string;
     customTopic: string;
+    tone: string;
   }) => {
     const topic = data.topic;
     const customTopic = data.customTopic;
+    const tone = data.tone;
+    const languageSelected = countries.map((country) => {
+      if (country.code === language) {
+        return country.text;
+      }
+    })[0];
 
     if (
       (!topic && !customTopic) ||
@@ -101,9 +96,12 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
       topicSelected = topic;
     }
 
-    console.log("topicSelected: ", topicSelected);
     try {
-      const data = await runGoogleAi(topicSelected);
+      const data = await runGoogleAi(
+        topicSelected,
+        tone,
+        languageSelected as string
+      );
       console.log("data: ", data);
       // setDialogue(data.text as string);
       handleDialogueUpdate(data.text as string);
@@ -117,6 +115,7 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
   const handleDialogueUpdate = (data: string) => {
     onDialogueUpdate(data);
   };
+
   return (
     <div className="w-full">
       <Form {...form}>

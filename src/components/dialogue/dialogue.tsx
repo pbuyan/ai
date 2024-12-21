@@ -5,9 +5,14 @@ import DialogueText from "./dialogue-text";
 
 export default function Dialogue({ teamData }: { teamData: unknown }) {
   const [dialogue, setDialogue] = useState("");
+  const [language, setLanguage] = useState("en-US");
 
   const handleDialogueUpdate = (res: string) => {
     setDialogue(res);
+  };
+
+  const handleLanguageUpdate = (lang: string) => {
+    setLanguage(lang);
   };
 
   return (
@@ -17,6 +22,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
           <DialogueForm
             teamData={teamData}
             onDialogueUpdate={handleDialogueUpdate}
+            language={language}
           />{" "}
         </div>
         {/* <div className="md:fixed md:bottom-0">
@@ -26,7 +32,11 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
       <div className="w-full md:w-1/2 lg:w-1/3 p-4">
         <div className="flex items-center justify-center border border-slate-300">
           {/* <Dialogue /> */}
-          <DialogueText text={dialogue} />
+          <DialogueText
+            text={dialogue}
+            language={language}
+            onLanguageUpdate={handleLanguageUpdate}
+          />
         </div>
       </div>
       <div className="w-full md:w-1/2 lg:w-1/3 p-4">

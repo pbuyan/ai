@@ -1,5 +1,5 @@
 import { tones } from "./tones";
-import SelectNested from "../select-nested";
+import SelectNested from "@/components/select-nested";
 
 interface SelectProps {
   value: string;
