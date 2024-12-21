@@ -60,8 +60,8 @@ export async function runGoogleAi(
     responseMimeType: "text/plain",
   };
 
-  const prompt = `You are an AI that generates short dialogues in Russian between two people on a given topic. Generate a short dialogue in ${language} on the topic:
-    ${topic}. Use real names and ${tone} tone.`;
+  const prompt = `You are an AI that generates short dialogues in ${language} between two people on a given topic. Generate a dialogue in ${language} on the topic:
+    ${topic}. Use real names and ${tone} tone. Do not provide translations. Use HTML tags to format the response, do not use any markdown symbols.`;
 
   console.log("prompt: ", prompt);
 

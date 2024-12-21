@@ -32,7 +32,12 @@ export default function DialogueForm({
   teamData,
   onDialogueUpdate,
   language,
-}: any) {
+}: {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  teamData: any;
+  onDialogueUpdate: (lang: string) => void;
+  language: string;
+}) {
   const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
   const [loading, setLoading] = useState(false);
   // const [language, setLanguage] = useState("en-US");
@@ -68,11 +73,12 @@ export default function DialogueForm({
     const topic = data.topic;
     const customTopic = data.customTopic;
     const tone = data.tone;
-    const languageSelected = countries.map((country) => {
+
+    const languageSelected = countries.filter((country) => {
       if (country.code === language) {
         return country.text;
       }
-    })[0];
+    })[0].text;
 
     if (
       (!topic && !customTopic) ||
@@ -117,7 +123,7 @@ export default function DialogueForm({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-3/4">
       <Form {...form}>
         <form
           onChange={handleFormChange}

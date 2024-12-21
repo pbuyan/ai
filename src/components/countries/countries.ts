@@ -26,6 +26,7 @@ export const countries = [
   { code: "ja", text: "Japanese" },
   { code: "jv", text: "Javanese" },
   { code: "ko", text: "Korean" },
+  { code: "ky", text: "Kyrgyz" },
   { code: "lt", text: "Lithuanian" },
   { code: "lv", text: "Latvian" },
   { code: "ml", text: "Malayalam" },
