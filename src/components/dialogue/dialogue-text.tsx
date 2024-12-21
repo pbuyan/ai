@@ -31,7 +31,7 @@ export default function DialogueText({
           </div>
         ) : (
           <div
-            className="flex flex-col gap-4"
+            className="prose prose-lg"
             /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
             dangerouslySetInnerHTML={{ __html: text }}
           />
