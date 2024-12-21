@@ -24,7 +24,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
     </div> */}
       </div>
       <div className="w-full md:w-1/2 lg:w-1/3 p-4">
-        <div className="h-32 md:h-64 flex items-center justify-center border border-slate-300">
+        <div className="flex items-center justify-center border border-slate-300">
           {/* <Dialogue /> */}
           <DialogueText text={dialogue} />
         </div>

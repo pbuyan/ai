@@ -6,6 +6,27 @@ import TopicList from "@/components/topics/topic-list";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import ToneList from "@/components/tones/tone-list";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const formSchema = z.object({
+  topic: z.string().min(2, {
+    message: "Please select a topic!",
+  }),
+  customTopic: z.string(),
+  tone: z.string(),
+});
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
@@ -13,17 +34,27 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
   // const [dialogue, setDialogue] = useState("");
   const [loading, setLoading] = useState(false);
   //   const [error, setError] = useState("");
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    getValues,
-    setValue,
-    setError,
-  } = useForm({
+  // const {
+  //   handleSubmit,
+  //   control,
+  //   formState: { errors },
+  //   getValues,
+  //   setValue,
+  //   setError,
+  // } = useForm({
+  //   defaultValues: {
+  //     topic: "",
+  //     customTopic: "",
+  //     tone: "Warm",
+  //   },
+  // });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      topic: "",
+      topic: "Farewells",
       customTopic: "",
+      tone: "Warm",
     },
   });
 
@@ -32,12 +63,12 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
     teamData.subscriptionStatus === "active";
 
   const handleFormChange = () => {
-    const { topic } = getValues();
+    const { topic } = form.getValues();
     if (topic === "My custom topic") {
       setShowCustomTopicInput(true);
       return;
     }
-    setValue("customTopic", "");
+    form.setValue("customTopic", "");
     setShowCustomTopicInput(false);
   };
 
@@ -52,7 +83,7 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
       (!topic && !customTopic) ||
       (topic === "My custom topic" && !customTopic)
     ) {
-      setError("topic", {
+      form.setError("topic", {
         type: "custom",
         message: "Please enter your topic.",
       });
@@ -88,49 +119,108 @@ export default function DialogueForm({ teamData, onDialogueUpdate }: any) {
   };
   return (
     <div className="w-full">
-      <form
-        onChange={handleFormChange}
-        onSubmit={handleSubmit(handleGenerateDialogue)}
-        className=" space-y-4"
-      >
-        <h1 className="text-2xl font-bold mb-4">Dialogue Generator</h1>
-        <Controller
-          name="topic"
-          control={control}
-          defaultValue=""
-          rules={{ required: "Please select a topic!" }}
-          render={({ field }) => (
-            <TopicList onChange={field.onChange} value={field.value} />
-          )}
-        />
+      <Form {...form}>
+        <form
+          onChange={handleFormChange}
+          onSubmit={form.handleSubmit(handleGenerateDialogue)}
+          className=" space-y-2"
+        >
+          <FormField
+            control={form.control}
+            name="topic"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Topic</FormLabel>
+                <FormControl>
+                  <TopicList onChange={field.onChange} value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Controller
-          name="customTopic"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              onChange={onChange}
-              value={value}
-              className={cn({ hidden: !showCustomTopicInput })}
-              placeholder={"Enter your topic"}
-            />
-          )}
-        />
-        {errors.topic && (
-          <p className="text-red-500 text-sm">
-            {errors.topic.message as ReactNode}
-          </p>
-        )}
-        <div className="md:fixed md:bottom-0 py-4">
-          <button
-            type="submit"
-            className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
-            disabled={loading || !isGenerationAllowed}
-          >
-            {loading ? "Generating..." : "Generate Dialogue"}
-          </button>
-        </div>
-      </form>
+          <FormField
+            control={form.control}
+            name="customTopic"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    onChange={field.onChange}
+                    value={field.value}
+                    className={cn({ hidden: !showCustomTopicInput })}
+                    placeholder={"Enter your topic"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="tone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tone</FormLabel>
+                <FormControl>
+                  <ToneList onChange={field.onChange} value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* <label>Topic</label>
+          <Controller
+            name="topic"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Please select a topic!" }}
+            render={({ field }) => (
+              <TopicList onChange={field.onChange} value={field.value} />
+            )}
+          /> */}
+
+          {/* <Controller
+            name="customTopic"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                onChange={onChange}
+                value={value}
+                className={cn({ hidden: !showCustomTopicInput })}
+                placeholder={"Enter your topic"}
+              />
+            )}
+          />
+
+          <label>Tone</label>
+          <Controller
+            name="tone"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Please select a tone!" }}
+            render={({ field }) => (
+              <ToneList onChange={field.onChange} value={field.value} />
+            )}
+          />
+          {errors.topic && (
+            <p className="text-red-500 text-sm">
+              {errors.topic.message as ReactNode}
+            </p>
+          )} */}
+          <div className="md:fixed md:bottom-0 py-4">
+            <Button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400"
+              disabled={loading || !isGenerationAllowed}
+            >
+              {loading ? "Generating..." : "Generate"}
+            </Button>
+          </div>
+        </form>
+      </Form>
       {/* {dialogue && (
         <div className="mt-6 p-4 bg-white border rounded-lg">
           <h2 className="text-lg font-semibold">Generated Dialogue:</h2>
