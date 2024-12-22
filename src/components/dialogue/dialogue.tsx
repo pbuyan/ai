@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import DialogueForm from "./dialogue-form";
-import DialogueText from "./dialogue-text";
 import DialogCard from "@/components/dialog-card";
 
 export default function Dialogue({ teamData }: { teamData: unknown }) {
@@ -34,7 +33,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
 
   return (
     <div className="flex flex-wrap">
-      <div className="w-full md:w-1/3 p-4">
+      <aside className="settings w-full md:w-1/3 p-4">
         <div className="h-auto md:h-screen flex px-4">
           <DialogueForm
             teamData={teamData}
@@ -44,7 +43,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
             generating={generating}
           />{" "}
         </div>
-      </div>
+      </aside>
       <div className="w-full md:w-1/3 p-4">
         {/* <div className="flex items-center justify-center"> */}
         {/* <DialogueText

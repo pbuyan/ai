@@ -67,4 +67,35 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  @media print {
+    /* Hide elements not needed for printing */
+    .no-print, header, footer, nav, aside {
+      display: none;
+    }
+  
+    /* Adjust layout for print */
+    body {
+      font-size: 12pt;
+      color: #000;
+      line-height: 1.5;
+    }
+  
+    /* Ensure links are visible */
+    a::after {
+      content: " (" attr(href) ")";
+    }
+  
+    /* Optimize for readability */
+    .content {
+      margin: 0;
+      padding: 0;
+    }
+  
+    /* Break content into pages */
+    .page-break {
+      page-break-before: always;
+    }
+  }
+  
 }
