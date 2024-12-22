@@ -1,6 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LanguageSelect from "@/components/languages/language-select";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Copy, Printer } from "lucide-react";
+import { toast } from "sonner";
 
 export default function DialogCard({
   text,
@@ -17,15 +21,47 @@ export default function DialogCard({
     onLanguageUpdate(lang);
   };
 
+  const sanitizeString = (inputString: string) => {
+    if (typeof inputString !== "string") {
+      throw new TypeError("Input must be a string");
+    }
+    return inputString.replace(/<\/?[^>]+(>|$)/g, "");
+  };
+
+  const handleCopy = () => {
+    const str = sanitizeString(text);
+    console.log("str: ", str);
+    navigator.clipboard.writeText(str);
+    toast.success("Copied!", {
+      position: "bottom-left",
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Create a new function to parse a string and remove all tags from the string
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-right">
+        <CardTitle className="flex justify-between">
+          <div className="flex gap-4">
+            <Button variant={"outline"} onClick={handleCopy}>
+              <Copy />
+            </Button>
+            <Button variant={"outline"} onClick={handlePrint}>
+              <Printer />
+            </Button>
+          </div>
           <div className="inline-block">
             <LanguageSelect value={language} onChange={handleLanguageChange} />
           </div>
         </CardTitle>
       </CardHeader>
+
+      <Separator />
       <CardContent>
         <div
           className={cn(
