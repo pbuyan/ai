@@ -33,7 +33,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
 
   return (
     <div className="flex flex-wrap">
-      <aside className="settings w-full md:w-1/3 p-4">
+      <aside className="settings w-full md:w-1/4 p-4">
         <div className="h-auto md:h-screen flex px-4">
           <DialogueForm
             teamData={teamData}
@@ -44,30 +44,23 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
           />{" "}
         </div>
       </aside>
-      <div className="w-full md:w-1/3 p-4">
-        {/* <div className="flex items-center justify-center"> */}
-        {/* <DialogueText
+      <div className="flex w-full md:w-3/4 p-4 flex-wrap gap-4">
+        <div className="w-full xl:w-1/2">
+          <DialogCard
             text={dialogue}
             language={language}
             onLanguageUpdate={handleLanguageUpdate}
             generating={generating}
-          /> */}
-
-        <DialogCard
-          text={dialogue}
-          language={language}
-          onLanguageUpdate={handleLanguageUpdate}
-          generating={generating}
-        />
-        {/* </div> */}
-      </div>
-      <div className="w-full md:w-1/3 p-4">
-        <DialogCard
-          text={translatedDialogue}
-          language={translationLanguage}
-          onLanguageUpdate={handleTranslationLanguageUpdate}
-          generating={translationGenerating}
-        />
+          />
+        </div>
+        <div className="w-full xl:w-1/2">
+          <DialogCard
+            text={translatedDialogue}
+            language={translationLanguage}
+            onLanguageUpdate={handleTranslationLanguageUpdate}
+            generating={translationGenerating}
+          />
+        </div>
       </div>
     </div>
   );

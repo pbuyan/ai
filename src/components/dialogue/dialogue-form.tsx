@@ -59,7 +59,8 @@ export default function DialogueForm({
 
   const handleFormChange = () => {
     const { topic } = form.getValues();
-    if (topic === "My custom topic") {
+    console.log('topic: ', topic)
+    if (topic === "Custom My custom topic") {
       setShowCustomTopicInput(true);
       return;
     }
@@ -84,9 +85,9 @@ export default function DialogueForm({
 
     if (
       (!topic && !customTopic) ||
-      (topic === "My custom topic" && !customTopic)
+      (topic === "Custom My custom topic" && !customTopic)
     ) {
-      form.setError("topic", {
+      form.setError("customTopic", {
         type: "custom",
         message: "Please enter your topic.",
       });
@@ -123,7 +124,7 @@ export default function DialogueForm({
   };
 
   return (
-    <div className="w-full md:w-3/4">
+    <div className="w-full">
       <Form {...form}>
         <form
           onChange={handleFormChange}
