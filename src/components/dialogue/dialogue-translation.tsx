@@ -1,7 +1,7 @@
-import LanguageSelect from "@/components/languages/language-select";
 import { cn } from "@/lib/utils";
+import LanguageSelect from "../languages/language-select";
 
-export default function DialogueText({
+export default function DialogueTranslation({
   text,
   language,
   onLanguageUpdate,

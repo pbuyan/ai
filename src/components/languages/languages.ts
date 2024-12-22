@@ -1,4 +1,4 @@
-export const countries = [
+export const languages = [
   { code: "af", text: "Afrikaans" },
   { code: "ar", text: "Arabic" },
   { code: "bn", text: "Bengali" },

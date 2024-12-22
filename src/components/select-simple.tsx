@@ -12,17 +12,19 @@ interface SelectProps {
   options: { code: string; text: string }[];
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
 }
 
-export default function SelectNested({
+export default function SelectSimple({
   options,
   value,
   onChange,
+  placeholder,
 }: SelectProps) {
   return (
     <Select onValueChange={onChange} value={value}>
       <SelectTrigger>
-        <SelectValue placeholder="Select a topic..." />
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         {options.map((item) => (

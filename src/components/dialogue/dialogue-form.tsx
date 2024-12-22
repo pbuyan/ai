@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { countries } from "@/components/countries/countries";
+import { languages } from "@/components/languages/languages";
 
 const formSchema = z.object({
   topic: z.string().min(2, {
@@ -31,16 +31,18 @@ const formSchema = z.object({
 export default function DialogueForm({
   teamData,
   onDialogueUpdate,
+  onGenerateClick,
   language,
+  generating,
 }: {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   teamData: any;
   onDialogueUpdate: (lang: string) => void;
+  onGenerateClick: (isGenerating: boolean) => void;
   language: string;
+  generating: boolean;
 }) {
   const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
-  const [loading, setLoading] = useState(false);
-  // const [language, setLanguage] = useState("en-US");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,9 +76,9 @@ export default function DialogueForm({
     const customTopic = data.customTopic;
     const tone = data.tone;
 
-    const languageSelected = countries.filter((country) => {
-      if (country.code === language) {
-        return country.text;
+    const languageSelected = languages.filter((lang) => {
+      if (lang.code === language) {
+        return lang.text;
       }
     })[0].text;
 
@@ -91,10 +93,9 @@ export default function DialogueForm({
       return;
     }
 
-    // setError("");
-    setLoading(true);
+    onGenerateClick(true);
+    handleDialogueUpdate("");
 
-    setLoading(true);
     let topicSelected = "";
     if (customTopic) {
       topicSelected = customTopic;
@@ -109,12 +110,11 @@ export default function DialogueForm({
         languageSelected as string
       );
       console.log("data: ", data);
-      // setDialogue(data.text as string);
       handleDialogueUpdate(data.text as string);
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      onGenerateClick(false);
     }
   };
 
@@ -128,14 +128,14 @@ export default function DialogueForm({
         <form
           onChange={handleFormChange}
           onSubmit={form.handleSubmit(handleGenerateDialogue)}
-          className=" space-y-2"
+          className="space-y-6"
         >
           <FormField
             control={form.control}
             name="topic"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Topic</FormLabel>
+                <FormLabel className="text-md font-semibold">Topic</FormLabel>
                 <FormControl>
                   <TopicList onChange={field.onChange} value={field.value} />
                 </FormControl>
@@ -167,7 +167,7 @@ export default function DialogueForm({
             name="tone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tone</FormLabel>
+                <FormLabel className="text-md font-semibold">Tone</FormLabel>
                 <FormControl>
                   <ToneList onChange={field.onChange} value={field.value} />
                 </FormControl>
@@ -175,63 +175,17 @@ export default function DialogueForm({
               </FormItem>
             )}
           />
-
-          {/* <label>Topic</label>
-          <Controller
-            name="topic"
-            control={control}
-            defaultValue=""
-            rules={{ required: "Please select a topic!" }}
-            render={({ field }) => (
-              <TopicList onChange={field.onChange} value={field.value} />
-            )}
-          /> */}
-
-          {/* <Controller
-            name="customTopic"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                onChange={onChange}
-                value={value}
-                className={cn({ hidden: !showCustomTopicInput })}
-                placeholder={"Enter your topic"}
-              />
-            )}
-          />
-
-          <label>Tone</label>
-          <Controller
-            name="tone"
-            control={control}
-            defaultValue=""
-            rules={{ required: "Please select a tone!" }}
-            render={({ field }) => (
-              <ToneList onChange={field.onChange} value={field.value} />
-            )}
-          />
-          {errors.topic && (
-            <p className="text-red-500 text-sm">
-              {errors.topic.message as ReactNode}
-            </p>
-          )} */}
-          <div className="md:fixed md:bottom-0 py-4">
+          <div className="flex justify-end py-4 content-end">
             <Button
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400"
-              disabled={loading || !isGenerationAllowed}
+              disabled={generating || !isGenerationAllowed}
             >
-              {loading ? "Generating..." : "Generate"}
+              {generating ? "Generating..." : "Generate"}
             </Button>
           </div>
         </form>
       </Form>
-      {/* {dialogue && (
-        <div className="mt-6 p-4 bg-white border rounded-lg">
-          <h2 className="text-lg font-semibold">Generated Dialogue:</h2>
-          <p className="mt-2 whitespace-pre-wrap">{dialogue}</p>
-        </div>
-      )} */}
     </div>
   );
 }
