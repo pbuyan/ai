@@ -1,4 +1,4 @@
-import LanguageSelect from "@/components/languages/language-select";
+import LanguageSelect from "@/components/languages/language-list";
 import { cn } from "@/lib/utils";
 
 export default function DialogueText({

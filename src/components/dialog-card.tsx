@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LanguageSelect from "@/components/languages/language-select";
+import LanguageSelect from "@/components/languages/language-list";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,8 @@ export default function DialogCard({
 }: {
   text: string;
   language: string;
-  onLanguageUpdate: (lang: string) => void;
   generating: boolean;
+  onLanguageUpdate: (lang: string) => void;
   onTranslationGenerateClick?: () => void;
 }) {
   const handleLanguageChange = (lang: string) => {

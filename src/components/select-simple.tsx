@@ -23,7 +23,7 @@ export default function SelectSimple({
 }: SelectProps) {
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger>
+      <SelectTrigger className="py-6 text-md">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

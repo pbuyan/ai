@@ -28,12 +28,20 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
     setGenerating(isGenerating);
   };
 
+  const handleTranslatedDialiogUpdate = (dialog: string) => {
+    setTranslatedDialogue(dialog);
+  };
+
   const handleTranslationGenerateClick = async () => {
     setTransletionGenerating(true);
 
     try {
-      const translation = await runGoogleAiTranslate(dialogue, language, translationLanguage);
-      setTranslatedDialogue(translation.text as string);
+      const translation = await runGoogleAiTranslate(
+        dialogue,
+        language,
+        translationLanguage
+      );
+      handleTranslatedDialiogUpdate(translation.text as string);
     } catch (error) {
       console.error(error);
     } finally {
@@ -51,10 +59,11 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
             onGenerateClick={handleGenerateClick}
             language={language}
             generating={generating}
+            onTranslatedDialiogUpdate={handleTranslatedDialiogUpdate}
           />{" "}
         </div>
       </aside>
-      <div className="flex w-full md:w-3/4 p-4 flex-wrap gap-4">
+      <div className="flex w-full md:w-3/4 p-4  gap-4">
         <div className="w-full xl:w-1/2">
           <DialogCard
             text={dialogue}

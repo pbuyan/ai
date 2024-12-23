@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import LanguageSelect from "../languages/language-select";
+import LanguageSelect from "../languages/language-list";
 
 export default function DialogueTranslation({
   text,

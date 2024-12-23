@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { languages } from "@/components/languages/languages";
+import LevelList from "@/components/level/level-list";
 
 const formSchema = z.object({
   topic: z.string().min(2, {
@@ -26,6 +27,7 @@ const formSchema = z.object({
   }),
   customTopic: z.string(),
   tone: z.string(),
+  level: z.string(),
 });
 
 export default function DialogueForm({
@@ -34,13 +36,15 @@ export default function DialogueForm({
   onGenerateClick,
   language,
   generating,
+  onTranslatedDialiogUpdate,
 }: {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   teamData: any;
-  onDialogueUpdate: (lang: string) => void;
-  onGenerateClick: (isGenerating: boolean) => void;
   language: string;
   generating: boolean;
+  onDialogueUpdate: (lang: string) => void;
+  onGenerateClick: (isGenerating: boolean) => void;
+  onTranslatedDialiogUpdate: (dialog: string) => void;
 }) {
   const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
 
@@ -50,6 +54,7 @@ export default function DialogueForm({
       topic: "",
       customTopic: "",
       tone: "Friendly and Approachable Warm",
+      level: "intermediate",
     },
   });
 
@@ -59,7 +64,7 @@ export default function DialogueForm({
 
   const handleFormChange = () => {
     const { topic } = form.getValues();
-    console.log('topic: ', topic)
+    console.log("topic: ", topic);
     if (topic === "Custom My custom topic") {
       setShowCustomTopicInput(true);
       return;
@@ -72,10 +77,12 @@ export default function DialogueForm({
     topic: string;
     customTopic: string;
     tone: string;
+    level: string;
   }) => {
     const topic = data.topic;
     const customTopic = data.customTopic;
     const tone = data.tone;
+    const level = data.level;
 
     const languageSelected = languages.filter((lang) => {
       if (lang.code === language) {
@@ -108,7 +115,8 @@ export default function DialogueForm({
       const data = await runGoogleAi(
         topicSelected,
         tone,
-        languageSelected as string
+        languageSelected as string,
+        level
       );
       console.log("data: ", data);
       handleDialogueUpdate(data.text as string);
@@ -121,6 +129,7 @@ export default function DialogueForm({
 
   const handleDialogueUpdate = (data: string) => {
     onDialogueUpdate(data);
+    onTranslatedDialiogUpdate("");
   };
 
   return (
@@ -154,7 +163,7 @@ export default function DialogueForm({
                   <Input
                     onChange={field.onChange}
                     value={field.value}
-                    className={cn({ hidden: !showCustomTopicInput })}
+                    className={cn("py-6", { hidden: !showCustomTopicInput })}
                     placeholder={"Enter your topic"}
                   />
                 </FormControl>
@@ -176,6 +185,21 @@ export default function DialogueForm({
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="level"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-md font-semibold">Level</FormLabel>
+                <FormControl>
+                  <LevelList onChange={field.onChange} value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="flex justify-end py-4 content-end">
             <Button
               type="submit"

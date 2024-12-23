@@ -48,7 +48,8 @@ export async function runOpenAi(topic: string, tone: string, language: string) {
 export async function runGoogleAi(
   topic: string,
   tone: string,
-  language: string
+  language: string,
+  level: string
 ) {
   const model = geminiAIConfig.getGenerativeModel({
     model: "gemini-1.5-flash",
@@ -62,8 +63,8 @@ export async function runGoogleAi(
     responseMimeType: "text/plain",
   };
 
-  const prompt = `You are an AI that generates short dialogues in ${language} between two people on a given topic. Generate a dialogue in ${language} on the topic:
-    ${topic}. Use real names and ${tone} tone. Do not provide translations. Use HTML tags to format the response, do not use any markdown symbols.`;
+  const prompt = `You are an AI that generates short dialogues in ${language} between two people on a given topic. Generate a ${level} level dialogue in ${language} on the topic:
+    ${topic}. Response should be in the format: "<p><b>Person A:</b> Some text.</p><p><b>Person B:</b> Some text</p>". Use real names and ${tone} tone. Do not provide translations. Use HTML tags to format the response, do not use any markdown symbols.`;
 
   console.log("prompt: ", prompt);
 
