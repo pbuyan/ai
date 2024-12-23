@@ -3,12 +3,16 @@
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+const geminiAIConfig = new GoogleGenerativeAI(
+  process.env.GEMINI_API_KEY as string
+);
+
 export async function runOpenAi(topic: string, tone: string, language: string) {
   if (!topic) {
     return { error: "Topic is required" };
   }
 
-  const configuration = new OpenAI({
+  const openAIConfig = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
@@ -17,7 +21,7 @@ export async function runOpenAi(topic: string, tone: string, language: string) {
       "prompt Open: ",
       `You are an AI that generates short dialogues between two people on a given topic using ${tone} tone and in language with code: "${language}".`
     );
-    const completion = await configuration.chat.completions.create({
+    const completion = await openAIConfig.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
@@ -46,9 +50,7 @@ export async function runGoogleAi(
   tone: string,
   language: string
 ) {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-
-  const model = genAI.getGenerativeModel({
+  const model = geminiAIConfig.getGenerativeModel({
     model: "gemini-1.5-flash",
   });
 
@@ -78,5 +80,24 @@ export async function runGoogleAi(
   } catch (error) {
     console.error(error);
     return { error: "Failed to generate dialogue" };
+  }
+}
+
+export async function runGoogleAiTranslate(
+  dialogue: string,
+  language: string,
+  translationLanguage: string
+) {
+  const model = geminiAIConfig.getGenerativeModel({
+    model: "gemini-1.5-flash",
+  });
+  const prompt = `You are an AI translator. Your task it to take this ${dialogue} string, that contains HTML tags and traslate from ${language} language to ${translationLanguage} language. Keep HTML markup, do not use any markdown symbols.`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    return { text: result.response.text() };
+  } catch (error) {
+    console.error(error);
+    return { error: "Failed to translate dialogue" };
   }
 }

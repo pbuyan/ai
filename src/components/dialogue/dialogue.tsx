@@ -2,6 +2,7 @@
 import { useState } from "react";
 import DialogueForm from "./dialogue-form";
 import DialogCard from "@/components/dialog-card";
+import { runGoogleAiTranslate } from "@/app/(dialogue)/actions";
 
 export default function Dialogue({ teamData }: { teamData: unknown }) {
   const [dialogue, setDialogue] = useState("");
@@ -27,8 +28,17 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
     setGenerating(isGenerating);
   };
 
-  const handleTranslationGenerateClick = (isGenerating: boolean) => {
-    setTransletionGenerating(isGenerating);
+  const handleTranslationGenerateClick = async () => {
+    setTransletionGenerating(true);
+
+    try {
+      const translation = await runGoogleAiTranslate(dialogue, language, translationLanguage);
+      setTranslatedDialogue(translation.text as string);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTransletionGenerating(false);
+    }
   };
 
   return (
@@ -59,6 +69,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
             language={translationLanguage}
             onLanguageUpdate={handleTranslationLanguageUpdate}
             generating={translationGenerating}
+            onTranslationGenerateClick={handleTranslationGenerateClick}
           />
         </div>
       </div>

@@ -11,11 +11,13 @@ export default function DialogCard({
   language,
   onLanguageUpdate,
   generating,
+  onTranslationGenerateClick,
 }: {
   text: string;
   language: string;
   onLanguageUpdate: (lang: string) => void;
   generating: boolean;
+  onTranslationGenerateClick?: () => void;
 }) {
   const handleLanguageChange = (lang: string) => {
     onLanguageUpdate(lang);
@@ -52,7 +54,19 @@ export default function DialogCard({
               <Printer />
             </Button>
           </div>
-          <div className="inline-block">
+          <div className="flex flex-row align-middle gap-4">
+            {typeof onTranslationGenerateClick === "function" && (
+              <>
+                <Button
+                  onClick={onTranslationGenerateClick}
+                  variant={"outline"}
+                >
+                  Traslate
+                </Button>
+                <div className="py-2">to</div>
+              </>
+            )}
+
             <LanguageSelect value={language} onChange={handleLanguageChange} />
           </div>
         </CardTitle>
