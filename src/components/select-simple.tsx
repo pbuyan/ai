@@ -23,7 +23,7 @@ export default function SelectSimple({
 }: SelectProps) {
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className="text-md">
+      <SelectTrigger className="text-md text-gray-500">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

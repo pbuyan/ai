@@ -29,6 +29,10 @@ export default function DialogCard({
     onLanguageUpdate(lang);
   };
 
+  const handleTranslationLanguageChange = (lang: string) => {
+    onTranslationLanguageUpdate(lang);
+  };
+
   const sanitizeString = (inputString: string) => {
     if (typeof inputString !== "string") {
       throw new TypeError("Input must be a string");
@@ -65,12 +69,25 @@ export default function DialogCard({
               </>
             )} */}
 
-            <div className="pt-2">{getLanguageName(language)}</div>
+            <div className="pt-2 text-gray-500">
+              {getLanguageName(language)}
+            </div>
             {/* <LanguageSelect value={language} onChange={handleLanguageChange} /> */}
           </div>
 
           <div className="pt-1">
-            <MoveRight className="text-gray-500" />
+            <div>
+              <>
+                <Button
+                  onClick={onTranslationGenerateClick}
+                  variant={"outline"}
+                  className="text-gray-500"
+                >
+                  Traslate
+                  <MoveRight className="text-gray-500" />
+                </Button>
+              </>
+            </div>
           </div>
 
           <div className="flex gap-4">
@@ -83,18 +100,8 @@ export default function DialogCard({
             <div>
               <LanguageSelect
                 value={translationLanguage}
-                onChange={handleLanguageChange}
+                onChange={handleTranslationLanguageChange}
               />
-            </div>
-            <div>
-              <>
-                <Button
-                  onClick={onTranslationGenerateClick}
-                  variant={"outline"}
-                >
-                  Traslate
-                </Button>
-              </>
             </div>
           </div>
         </CardTitle>
@@ -102,51 +109,56 @@ export default function DialogCard({
 
       <Separator />
       <CardContent>
-        <div
-          className={cn(
-            "p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
-            { "animate-pulse": generating }
-          )}
-        >
-          {!text ? (
-            <div className="w-full">
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
-            </div>
-          ) : (
-            <div
-              className="prose prose-lg"
-              /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
-              dangerouslySetInnerHTML={{ __html: text }}
-            />
-          )}
-        </div>
-        <div
-          className={cn(
-            "p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
-            { "animate-pulse": generating }
-          )}
-        >
-          {!text ? (
-            <div className="w-full">
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
-              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
-            </div>
-          ) : (
-            <div
-              className="prose prose-lg"
-              /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
-              dangerouslySetInnerHTML={{ __html: translatedDialogue }}
-            />
-          )}
+        <div className="flex flex-wrap">
+          <div
+            className={cn(
+              "w-full lg:w-1/2 p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
+              { "animate-pulse": generating }
+            )}
+          >
+            {!text ? (
+              <div className="w-full">
+                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
+              </div>
+            ) : (
+              <div
+                className="prose prose-lg"
+                /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
+                dangerouslySetInnerHTML={{ __html: text }}
+              />
+            )}
+          </div>
+          <div
+            className={cn(
+              "w-full lg:w-1/2 p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
+              { "animate-pulse": generating }
+            )}
+          >
+            <h2 className="pb-8 lg:hidden underline text-xl text-gray-500">
+              {getLanguageName(translationLanguage)}
+            </h2>
+            {!translatedDialogue ? (
+              <div className="w-full">
+                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
+              </div>
+            ) : (
+              <div
+                className="prose prose-lg"
+                /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
+                dangerouslySetInnerHTML={{ __html: translatedDialogue }}
+              />
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

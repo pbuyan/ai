@@ -65,7 +65,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
         </div>
       </aside>
       <div className="flex w-full md:w-3/4 p-4  gap-4">
-        <div className="w-full xl:w-1/2">
+        <div className="w-full">
           <DialogCard
             text={dialogue}
             translatedDialogue={translatedDialogue}

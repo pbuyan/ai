@@ -21,7 +21,7 @@ export default function SelectNested({
 }: SelectProps) {
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className="py-6 text-md">
+      <SelectTrigger className="py-6 text-md text-gray-500">
         <SelectValue placeholder="Select a topic..." />
       </SelectTrigger>
       <SelectContent>
