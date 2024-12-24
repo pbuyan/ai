@@ -51,7 +51,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
 
   return (
     <div className="flex flex-wrap">
-      <aside className="settings w-full md:w-1/4 p-4">
+      <aside className="settings w-full md:w-1/4 p-4 border-r">
         <div className="h-auto md:h-screen flex px-4">
           <DialogueForm
             teamData={teamData}
@@ -60,6 +60,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
             language={language}
             generating={generating}
             onTranslatedDialiogUpdate={handleTranslatedDialiogUpdate}
+            onLanguageUpdate={handleLanguageUpdate}
           />{" "}
         </div>
       </aside>
@@ -67,12 +68,16 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
         <div className="w-full xl:w-1/2">
           <DialogCard
             text={dialogue}
+            translatedDialogue={translatedDialogue}
             language={language}
             onLanguageUpdate={handleLanguageUpdate}
+            onTranslationLanguageUpdate={handleTranslationLanguageUpdate}
             generating={generating}
+            onTranslationGenerateClick={handleTranslationGenerateClick}
+            translationLanguage={translationLanguage}
           />
         </div>
-        <div className="w-full xl:w-1/2">
+        {/* <div className="w-full xl:w-1/2">
           <DialogCard
             text={translatedDialogue}
             language={translationLanguage}
@@ -80,7 +85,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
             generating={translationGenerating}
             onTranslationGenerateClick={handleTranslationGenerateClick}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

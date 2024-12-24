@@ -1,22 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LanguageSelect from "@/components/languages/language-list";
-import { cn } from "@/lib/utils";
+import { cn, getLanguageName } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Copy, Printer } from "lucide-react";
+import { Copy, Printer, MoveRight } from "lucide-react";
 import { toast } from "sonner";
 
 export default function DialogCard({
   text,
+  translatedDialogue,
   language,
+  translationLanguage,
   onLanguageUpdate,
+  onTranslationLanguageUpdate,
   generating,
   onTranslationGenerateClick,
 }: {
   text: string;
+  translatedDialogue: string;
   language: string;
+  translationLanguage: string;
   generating: boolean;
   onLanguageUpdate: (lang: string) => void;
+  onTranslationLanguageUpdate: (lang: string) => void;
   onTranslationGenerateClick?: () => void;
 }) {
   const handleLanguageChange = (lang: string) => {
@@ -46,16 +52,8 @@ export default function DialogCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between">
-          <div className="flex gap-4">
-            <Button variant={"outline"} onClick={handleCopy}>
-              <Copy />
-            </Button>
-            <Button variant={"outline"} onClick={handlePrint}>
-              <Printer />
-            </Button>
-          </div>
           <div className="flex flex-row align-middle gap-4">
-            {typeof onTranslationGenerateClick === "function" && (
+            {/* {typeof onTranslationGenerateClick === "function" && (
               <>
                 <Button
                   onClick={onTranslationGenerateClick}
@@ -65,9 +63,39 @@ export default function DialogCard({
                 </Button>
                 <div className="py-2">to</div>
               </>
-            )}
+            )} */}
 
-            <LanguageSelect value={language} onChange={handleLanguageChange} />
+            <div className="pt-2">{getLanguageName(language)}</div>
+            {/* <LanguageSelect value={language} onChange={handleLanguageChange} /> */}
+          </div>
+
+          <div className="pt-1">
+            <MoveRight className="text-gray-500" />
+          </div>
+
+          <div className="flex gap-4">
+            {/* <Button variant={"outline"} onClick={handleCopy}>
+              <Copy />
+            </Button>
+            <Button variant={"outline"} onClick={handlePrint}>
+              <Printer />
+            </Button> */}
+            <div>
+              <LanguageSelect
+                value={translationLanguage}
+                onChange={handleLanguageChange}
+              />
+            </div>
+            <div>
+              <>
+                <Button
+                  onClick={onTranslationGenerateClick}
+                  variant={"outline"}
+                >
+                  Traslate
+                </Button>
+              </>
+            </div>
           </div>
         </CardTitle>
       </CardHeader>
@@ -94,6 +122,29 @@ export default function DialogCard({
               className="prose prose-lg"
               /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
               dangerouslySetInnerHTML={{ __html: text }}
+            />
+          )}
+        </div>
+        <div
+          className={cn(
+            "p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
+            { "animate-pulse": generating }
+          )}
+        >
+          {!text ? (
+            <div className="w-full">
+              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
+              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
+              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
+              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
+              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
+              <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
+            </div>
+          ) : (
+            <div
+              className="prose prose-lg"
+              /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
+              dangerouslySetInnerHTML={{ __html: translatedDialogue }}
             />
           )}
         </div>

@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import TopicList from "@/components/topics/topic-list";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn, getLanguageName } from "@/lib/utils";
 import ToneList from "@/components/tones/tone-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { languages } from "@/components/languages/languages";
 import LevelList from "@/components/level/level-list";
+import LanguageSelect from "../languages/language-list";
 
 const formSchema = z.object({
   topic: z.string().min(2, {
@@ -28,6 +29,7 @@ const formSchema = z.object({
   customTopic: z.string(),
   tone: z.string(),
   level: z.string(),
+  language: z.string(),
 });
 
 export default function DialogueForm({
@@ -37,6 +39,7 @@ export default function DialogueForm({
   language,
   generating,
   onTranslatedDialiogUpdate,
+  onLanguageUpdate,
 }: {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   teamData: any;
@@ -45,6 +48,7 @@ export default function DialogueForm({
   onDialogueUpdate: (lang: string) => void;
   onGenerateClick: (isGenerating: boolean) => void;
   onTranslatedDialiogUpdate: (dialog: string) => void;
+  onLanguageUpdate: (lang: string) => void;
 }) {
   const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
 
@@ -55,6 +59,7 @@ export default function DialogueForm({
       customTopic: "",
       tone: "Friendly and Approachable Warm",
       level: "intermediate",
+      language,
     },
   });
 
@@ -84,11 +89,13 @@ export default function DialogueForm({
     const tone = data.tone;
     const level = data.level;
 
-    const languageSelected = languages.filter((lang) => {
-      if (lang.code === language) {
-        return lang.text;
-      }
-    })[0].text;
+    const languageSelected = getLanguageName(language);
+
+    // languages.filter((lang) => {
+    //   if (lang.code === language) {
+    //     return lang.text;
+    //   }
+    // })[0].text;
 
     if (
       (!topic && !customTopic) ||
@@ -132,13 +139,17 @@ export default function DialogueForm({
     onTranslatedDialiogUpdate("");
   };
 
+  const handleLanguageChange = (lang: string) => {
+    onLanguageUpdate(lang);
+  };
+
   return (
     <div className="w-full">
       <Form {...form}>
         <form
           onChange={handleFormChange}
           onSubmit={form.handleSubmit(handleGenerateDialogue)}
-          className="space-y-6"
+          className="space-y-6 h-full"
         >
           <FormField
             control={form.control}
@@ -200,7 +211,26 @@ export default function DialogueForm({
             )}
           />
 
-          <div className="flex justify-end py-4 content-end">
+          <FormField
+            control={form.control}
+            name="language"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-md font-semibold">
+                  Language
+                </FormLabel>
+                <FormControl>
+                  <LanguageSelect
+                    value={language}
+                    onChange={handleLanguageChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex justify-end py-4 content-end sticky bottom-0">
             <Button
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400"
