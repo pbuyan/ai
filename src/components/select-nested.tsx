@@ -9,19 +9,26 @@ import {
 } from "@/components/ui/select";
 
 interface SelectProps {
+  size?: "sm" | "md" | "lg";
   options: { category: string; items: string[] }[];
   value: string;
   onChange: (value: string) => void;
 }
 
 export default function SelectNested({
+  size = "sm",
   options,
   value,
   onChange,
 }: SelectProps) {
+  const sizes = {
+    sm: "py-4",
+    md: "py-6",
+    lg: "py-8",
+  };
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className="py-6 text-md text-gray-500">
+      <SelectTrigger className={`text-md text-gray-500 ${sizes[size]}`}>
         <SelectValue placeholder="Select a topic..." />
       </SelectTrigger>
       <SelectContent>

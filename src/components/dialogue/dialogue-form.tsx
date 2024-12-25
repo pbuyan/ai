@@ -151,7 +151,11 @@ export default function DialogueForm({
               <FormItem>
                 <FormLabel className="text-md font-semibold">Topic</FormLabel>
                 <FormControl>
-                  <TopicList onChange={field.onChange} value={field.value} />
+                  <TopicList
+                    size="md"
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -183,7 +187,11 @@ export default function DialogueForm({
               <FormItem>
                 <FormLabel className="text-md font-semibold">Tone</FormLabel>
                 <FormControl>
-                  <ToneList onChange={field.onChange} value={field.value} />
+                  <ToneList
+                    size="md"
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -197,7 +205,11 @@ export default function DialogueForm({
               <FormItem>
                 <FormLabel className="text-md font-semibold">Level</FormLabel>
                 <FormControl>
-                  <LevelList onChange={field.onChange} value={field.value} />
+                  <LevelList
+                    size="md"
+                    onChange={field.onChange}
+                    value={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -214,6 +226,7 @@ export default function DialogueForm({
                 </FormLabel>
                 <FormControl>
                   <LanguageSelect
+                    size="md"
                     value={language}
                     onChange={handleLanguageChange}
                   />
