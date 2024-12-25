@@ -1,4 +1,5 @@
 import "./globals.css";
+import { ThemeProvider } from "@/context/theme";
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import { UserProvider } from "@/lib/auth";
@@ -27,10 +28,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
+      suppressHydrationWarning
     >
       <body className="min-h-[100dvh] bg-gray-50">
-        <UserProvider userPromise={userPromise}>{children}</UserProvider>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <UserProvider userPromise={userPromise}>{children}</UserProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

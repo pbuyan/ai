@@ -149,7 +149,9 @@ export default function DialogueForm({
             name="topic"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md font-semibold">Topic</FormLabel>
+                <FormLabel className="text-md text-muted-foreground font-semibold">
+                  Topic
+                </FormLabel>
                 <FormControl>
                   <TopicList
                     size="md"
@@ -185,7 +187,9 @@ export default function DialogueForm({
             name="tone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md font-semibold">Tone</FormLabel>
+                <FormLabel className="text-md text-muted-foreground font-semibold">
+                  Tone
+                </FormLabel>
                 <FormControl>
                   <ToneList
                     size="md"
@@ -203,7 +207,9 @@ export default function DialogueForm({
             name="level"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md font-semibold">Level</FormLabel>
+                <FormLabel className="text-md text-muted-foreground font-semibold">
+                  Level
+                </FormLabel>
                 <FormControl>
                   <LevelList
                     size="md"
@@ -221,7 +227,7 @@ export default function DialogueForm({
             name="language"
             render={() => (
               <FormItem>
-                <FormLabel className="text-md font-semibold">
+                <FormLabel className="text-md text-muted-foreground font-semibold">
                   Language
                 </FormLabel>
                 <FormControl>

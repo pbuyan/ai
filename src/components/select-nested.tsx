@@ -28,7 +28,7 @@ export default function SelectNested({
   };
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className={`text-md text-gray-500 ${sizes[size]}`}>
+      <SelectTrigger className={`text-md text-muted-foreground ${sizes[size]}`}>
         <SelectValue placeholder="Select a topic..." />
       </SelectTrigger>
       <SelectContent>

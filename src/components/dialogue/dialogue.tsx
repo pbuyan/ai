@@ -50,7 +50,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
   };
 
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap bg-background">
       <aside className="settings w-full md:w-1/4 p-4 border-r">
         <div className="h-auto md:h-screen flex px-4">
           <DialogueForm

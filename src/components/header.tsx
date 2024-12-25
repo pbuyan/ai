@@ -16,6 +16,7 @@ import { signOut } from "@/app/(login)/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoSrc from "../../public/images/say-it-better-logo.png";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,27 +29,31 @@ export default function Header() {
     router.push("/");
   }
   return (
-    <header className="border-b border-gray-200">
+    <header className="border-b border-border bg-background">
       <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Image src={logoSrc} className="h-9 w-9" alt="Logo" />
-          <span className="ml-2 text-xl font-semibold text-gray-900">
+          <span className="ml-2 text-xl font-semibold text-muted-foreground">
             SayItBetter{" "}
           </span>
         </Link>
         <div className="flex items-center space-x-4">
           <Link
             href="/dialogue"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            className="text-sm font-medium  hover:text-foreground text-muted-foreground"
           >
             Dialogue
           </Link>
           <Link
             href="/pricing"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            className="text-sm font-medium  hover:text-foreground text-muted-foreground"
           >
             Pricing
           </Link>
+
+          <div className="ml-2">
+            <ModeToggle />
+          </div>
           {user ? (
             <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <DropdownMenuTrigger asChild>
