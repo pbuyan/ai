@@ -64,7 +64,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
           />{" "}
         </div>
       </aside>
-      <div className="flex w-full md:w-3/4 p-4  gap-4">
+      <main className="flex w-full md:w-3/4 p-4 gap-4">
         <div className="w-full">
           <DialogCard
             text={dialogue}
@@ -73,20 +73,12 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
             onLanguageUpdate={handleLanguageUpdate}
             onTranslationLanguageUpdate={handleTranslationLanguageUpdate}
             generating={generating}
+            generatingTranslation={translationGenerating}
             onTranslationGenerateClick={handleTranslationGenerateClick}
             translationLanguage={translationLanguage}
           />
         </div>
-        {/* <div className="w-full xl:w-1/2">
-          <DialogCard
-            text={translatedDialogue}
-            language={translationLanguage}
-            onLanguageUpdate={handleTranslationLanguageUpdate}
-            generating={translationGenerating}
-            onTranslationGenerateClick={handleTranslationGenerateClick}
-          />
-        </div> */}
-      </div>
+      </main>
     </div>
   );
 }

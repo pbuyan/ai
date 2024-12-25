@@ -14,6 +14,7 @@ export default function DialogCard({
   onLanguageUpdate,
   onTranslationLanguageUpdate,
   generating,
+  generatingTranslation,
   onTranslationGenerateClick,
 }: {
   text: string;
@@ -21,6 +22,7 @@ export default function DialogCard({
   language: string;
   translationLanguage: string;
   generating: boolean;
+  generatingTranslation: boolean;
   onLanguageUpdate: (lang: string) => void;
   onTranslationLanguageUpdate: (lang: string) => void;
   onTranslationGenerateClick?: () => void;
@@ -40,8 +42,8 @@ export default function DialogCard({
     return inputString.replace(/<\/?[^>]+(>|$)/g, "");
   };
 
-  const handleCopy = () => {
-    const str = sanitizeString(text);
+  const handleCopy = (string: string) => {
+    const str = sanitizeString(string);
     navigator.clipboard.writeText(str);
     toast.success("Copied!", {
       position: "bottom-left",
@@ -55,24 +57,9 @@ export default function DialogCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex justify-between">
-          <div className="flex flex-row align-middle gap-4">
-            {/* {typeof onTranslationGenerateClick === "function" && (
-              <>
-                <Button
-                  onClick={onTranslationGenerateClick}
-                  variant={"outline"}
-                >
-                  Traslate
-                </Button>
-                <div className="py-2">to</div>
-              </>
-            )} */}
-
-            <div className="pt-2 text-gray-500">
-              {getLanguageName(language)}
-            </div>
-            {/* <LanguageSelect value={language} onChange={handleLanguageChange} /> */}
+        <CardTitle className="flex justify-between  h-full align-middle">
+          <div className="text-foreground my-auto">
+            {getLanguageName(language)}
           </div>
 
           <div className="pt-1">
@@ -81,22 +68,16 @@ export default function DialogCard({
                 <Button
                   onClick={onTranslationGenerateClick}
                   variant={"outline"}
-                  className="text-gray-500"
+                  className="text-foreground"
                 >
                   Traslate
-                  <MoveRight className="text-gray-500" />
+                  <MoveRight />
                 </Button>
               </>
             </div>
           </div>
 
           <div className="flex gap-4">
-            {/* <Button variant={"outline"} onClick={handleCopy}>
-              <Copy />
-            </Button>
-            <Button variant={"outline"} onClick={handlePrint}>
-              <Printer />
-            </Button> */}
             <div>
               <LanguageSelect
                 value={translationLanguage}
@@ -112,10 +93,17 @@ export default function DialogCard({
         <div className="flex flex-wrap">
           <div
             className={cn(
-              "w-full lg:w-1/2 p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
-              { "animate-pulse": generating }
+              "w-full p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
+              { "animate-pulse": generating },
+              { "lg:w-1/2": generatingTranslation || translatedDialogue }
             )}
           >
+            <div className="pb-2 flex justify-end text-gray-400">
+              <Copy
+                onClick={() => handleCopy(text)}
+                className={cn("hover:cursor-pointer", { hidden: !text })}
+              />
+            </div>
             {!text ? (
               <div className="w-full">
                 <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
@@ -133,15 +121,25 @@ export default function DialogCard({
               />
             )}
           </div>
+          <Separator className="lg:hidden" />
           <div
             className={cn(
               "w-full lg:w-1/2 p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
-              { "animate-pulse": generating }
+              { "animate-pulse": generatingTranslation },
+              { hidden: !generatingTranslation && !translatedDialogue }
             )}
           >
-            <h2 className="pb-8 lg:hidden underline text-xl text-gray-500">
-              {getLanguageName(translationLanguage)}
-            </h2>
+            <div className="pb-2 flex justify-between lg:justify-end text-gray-400">
+              <h2 className="pb-8 lg:hidden underline text-xl text-foreground">
+                {getLanguageName(translationLanguage)}
+              </h2>
+              <Copy
+                onClick={() => handleCopy(translatedDialogue)}
+                className={cn("hover:cursor-pointer", {
+                  hidden: !translatedDialogue,
+                })}
+              />
+            </div>
             {!translatedDialogue ? (
               <div className="w-full">
                 <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />

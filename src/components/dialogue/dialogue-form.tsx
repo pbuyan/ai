@@ -10,6 +10,7 @@ import ToneList from "@/components/tones/tone-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -18,7 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { languages } from "@/components/languages/languages";
 import LevelList from "@/components/level/level-list";
 import LanguageSelect from "../languages/language-list";
 
@@ -91,12 +91,6 @@ export default function DialogueForm({
 
     const languageSelected = getLanguageName(language);
 
-    // languages.filter((lang) => {
-    //   if (lang.code === language) {
-    //     return lang.text;
-    //   }
-    // })[0].text;
-
     if (
       (!topic && !customTopic) ||
       (topic === "Custom My custom topic" && !customTopic)
@@ -125,7 +119,6 @@ export default function DialogueForm({
         languageSelected as string,
         level
       );
-      console.log("data: ", data);
       handleDialogueUpdate(data.text as string);
     } catch (err) {
       console.error(err);
@@ -156,9 +149,7 @@ export default function DialogueForm({
             name="topic"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md font-semibold text-gray-500">
-                  Topic
-                </FormLabel>
+                <FormLabel className="text-md font-semibold">Topic</FormLabel>
                 <FormControl>
                   <TopicList onChange={field.onChange} value={field.value} />
                 </FormControl>
@@ -190,9 +181,7 @@ export default function DialogueForm({
             name="tone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md font-semibold text-gray-500">
-                  Tone
-                </FormLabel>
+                <FormLabel className="text-md font-semibold">Tone</FormLabel>
                 <FormControl>
                   <ToneList onChange={field.onChange} value={field.value} />
                 </FormControl>
@@ -206,9 +195,7 @@ export default function DialogueForm({
             name="level"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md font-semibold text-gray-500">
-                  Level
-                </FormLabel>
+                <FormLabel className="text-md font-semibold">Level</FormLabel>
                 <FormControl>
                   <LevelList onChange={field.onChange} value={field.value} />
                 </FormControl>
@@ -220,9 +207,9 @@ export default function DialogueForm({
           <FormField
             control={form.control}
             name="language"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
-                <FormLabel className="text-md font-semibold text-gray-500">
+                <FormLabel className="text-md font-semibold">
                   Language
                 </FormLabel>
                 <FormControl>
@@ -242,6 +229,7 @@ export default function DialogueForm({
               className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400"
               disabled={generating || !isGenerationAllowed}
             >
+              <Play className="h-5 w-5" />
               {generating ? "Generating..." : "Generate"}
             </Button>
           </div>
