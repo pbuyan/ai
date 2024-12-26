@@ -41,7 +41,7 @@ export default function SettingsLayout({
       <div className="flex flex-1 overflow-hidden h-full">
         {/* Sidebar */}
         <aside
-          className={`w-64 bg-white lg:bg-gray-50 border-r border-gray-200 lg:block ${
+          className={`w-64 bg-background border-r lg:block ${
             isSidebarOpen ? 'block' : 'hidden'
           } lg:relative absolute inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -53,7 +53,7 @@ export default function SettingsLayout({
                 <Button
                   variant={pathname === item.href ? 'secondary' : 'ghost'}
                   className={`my-1 w-full justify-start ${
-                    pathname === item.href ? 'bg-gray-100' : ''
+                    pathname === item.href ? 'bg-muted' : ''
                   }`}
                   onClick={() => setIsSidebarOpen(false)}
                 >
