@@ -63,18 +63,14 @@ export default function DialogCard({
           </div>
 
           <div className="pt-1">
-            <div>
-              <>
-                <Button
-                  onClick={onTranslationGenerateClick}
-                  variant={"outline"}
-                  className="text-muted-foreground text-md font-semibold"
-                >
-                  Traslate
-                  <MoveRight />
-                </Button>
-              </>
-            </div>
+            <Button
+              onClick={onTranslationGenerateClick}
+              variant={"outline"}
+              className="text-muted-foreground text-md font-semibold"
+            >
+              Traslate
+              <MoveRight />
+            </Button>
           </div>
 
           <div className="flex gap-4">
@@ -94,7 +90,7 @@ export default function DialogCard({
         <div className="flex mt-6 gap-2 flex-col lg:flex-row">
           <div
             className={cn(
-              "w-full p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
+              "w-full p-4 bg-gray-50 rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
               { "animate-pulse": generating },
               { "lg:w-1/2": generatingTranslation || translatedDialogue }
             )}
@@ -107,12 +103,12 @@ export default function DialogCard({
             </div>
             {!text ? (
               <div className="w-full">
-                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
+                <div className="h-3.5 bg-skeleton rounded-full w-48 mb-4" />
+                <div className="h-3 bg-skeleton rounded-full max-w-[480px] mb-2.5" />
+                <div className="h-3 bg-skeleton rounded-full mb-2.5" />
+                <div className="h-3 bg-skeleton rounded-full max-w-[440px] mb-2.5" />
+                <div className="h-3 bg-skeleton rounded-full max-w-[460px] mb-2.5" />
+                <div className="h-3 bg-skeleton rounded-full max-w-[360px]" />
               </div>
             ) : (
               <div
@@ -125,7 +121,7 @@ export default function DialogCard({
           <Separator className="lg:hidden" />
           <div
             className={cn(
-              "w-full lg:w-1/2 p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
+              "w-full lg:w-1/2 p-4 bg-gray-50 rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
               { "animate-pulse": generatingTranslation },
               { hidden: !generatingTranslation && !translatedDialogue }
             )}
@@ -143,12 +139,12 @@ export default function DialogCard({
             </div>
             {!translatedDialogue ? (
               <div className="w-full">
-                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5" />
-                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]" />
+                <div className="h-2.5 bg-skeleton rounded-full w-48 mb-4" />
+                <div className="h-2 bg-skeleton rounded-full max-w-[480px] mb-2.5" />
+                <div className="h-2 bg-skeleton rounded-full mb-2.5" />
+                <div className="h-2 bg-skeleton rounded-full max-w-[440px] mb-2.5" />
+                <div className="h-2 bg-skeleton rounded-full max-w-[460px] mb-2.5" />
+                <div className="h-2 bg-skeleton rounded-full max-w-[360px]" />
               </div>
             ) : (
               <div
