@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ArrowRight,
   CreditCard,
@@ -14,6 +15,27 @@ import {
   BrainCog,
 } from "lucide-react";
 import { Terminal } from "./terminal";
+
+const features = [
+  {
+    icon: <Sparkles className="h-6 w-6" />,
+    title: "AI-Powered Dialogues",
+    description:
+      "Practice conversations with AI-powered virtual assistants, enabling you to learn new languages and improve your communication skills.",
+  },
+  {
+    icon: <Languages className="h-6 w-6" />,
+    title: "Translation Support",
+    description:
+      "Instantly translate dialogues to understand nuances and expand vocabulary.",
+  },
+  {
+    icon: <BrainCircuit className="h-6 w-6" />,
+    title: "Customizable Practice",
+    description:
+      "Select topics, languages, and difficulty levels to suit your learning goals.",
+  },
+];
 
 export default function HomePage() {
   return (
@@ -52,50 +74,29 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl font-bold mb-10 text-center">Features</h3>
           <div className="lg:grid lg:grid-cols-3 lg:gap-8">
-            <div className="flex flex-col">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-destructive text-white">
-                <Sparkles className="h-6 w-6" />
-              </div>
-              <div className="mt-5">
-                <h2 className="text-lg font-medium text-gray-900">
-                  AI-Generated Dialogues
-                </h2>
-                <p className="mt-2 text-base text-gray-500">
-                  Engage in dynamic conversations tailored to your skill level
-                  and chosen topics.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-10 lg:mt-0">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-destructive text-white">
-                <Languages className="h-6 w-6" />
-              </div>
-              <div className="mt-5">
-                <h2 className="text-lg font-medium text-gray-900">
-                  Translation Support
-                </h2>
-                <p className="mt-2 text-base text-gray-500">
-                  Instantly translate dialogues to understand nuances and expand
-                  vocabulary.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-10 lg:mt-0">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-destructive text-white">
-                <BrainCircuit className="h-6 w-6" />
-              </div>
-              <div className="mt-5">
-                <h2 className="text-lg font-medium text-gray-900">
-                  Customizable Practice
-                </h2>
-                <p className="mt-2 text-base text-gray-500">
-                  Select topics, languages, and difficulty levels to suit your
-                  learning goals.
-                </p>
-              </div>
-            </div>
+            {features.map((feature) => (
+              <Card className="mb-8" key={feature.title}>
+                <CardHeader>
+                  <CardTitle className="flex gap-4 align-middle">
+                    <div className="flex items-center justify-center h-12 w-12 rounded-md bg-destructive text-white">
+                      {feature.icon}
+                    </div>
+                    <div className="my-auto">{feature.title}</div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <div className="mb-4 sm:mb-0">
+                        <p className="mt-2 text-base text-gray-500">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
