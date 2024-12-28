@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CreditCard, Database } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CreditCard, Database } from "lucide-react";
 // import { Terminal } from './terminal';
 
 export default function HomePage() {
@@ -11,7 +11,9 @@ export default function HomePage() {
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
               <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl md:text-6xl">
                 Build Your SaaS
-                <span className="block text-orange-500">Faster Than Ever</span>
+                <span className="block text-orange-500">
+                  Faster Than Ever D
+                </span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                 Launch your SaaS product in record time with our powerful,
