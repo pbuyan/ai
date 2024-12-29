@@ -30,7 +30,7 @@ export default function SelectSimple({
   };
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className={`text-md text-muted-foreground ${sizes[size]}`}>
+      <SelectTrigger className={`text-md text-foreground ${sizes[size]}`}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

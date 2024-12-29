@@ -58,7 +58,7 @@ export default function DialogCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between  h-full align-middle">
-          <div className="text-muted-foreground my-auto">
+          <div className="text-foreground my-auto">
             {getLanguageName(language)}
           </div>
 
@@ -66,7 +66,7 @@ export default function DialogCard({
             <Button
               onClick={onTranslationGenerateClick}
               variant={"outline"}
-              className="text-muted-foreground text-md font-semibold"
+              className="text-foreground text-md font-semibold"
             >
               Traslate
               <MoveRight />
@@ -112,7 +112,7 @@ export default function DialogCard({
               </div>
             ) : (
               <div
-                className="prose prose-lg text-muted-foreground"
+                className="prose prose-lg text-primary"
                 /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
                 dangerouslySetInnerHTML={{ __html: text }}
               />
@@ -148,7 +148,7 @@ export default function DialogCard({
               </div>
             ) : (
               <div
-                className="prose prose-lg text-muted-foreground"
+                className="prose prose-lg text-primary"
                 /* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */
                 dangerouslySetInnerHTML={{ __html: translatedDialogue }}
               />

@@ -33,7 +33,7 @@ export default function Nav() {
     <div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
       <Link href="/" className="flex items-center">
         <Image src={logoSrc} className="h-9 w-9" alt="Logo" />
-        <span className="ml-2 text-xl font-semibold text-muted-foreground">
+        <span className="ml-2 text-xl font-semibold text-foreground">
           SayItBetter{" "}
         </span>
       </Link>

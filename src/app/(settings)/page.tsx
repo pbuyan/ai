@@ -46,7 +46,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
-              <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl md:text-6xl">
+              <h1 className="text-4xl font-bold text-primary tracking-tight sm:text-5xl md:text-6xl">
                 Master Foreign Languages
                 <span className="block text-destructive">
                   Through AI-Powered Dialogues
@@ -77,7 +77,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="py-16 bg-white w-full">
+      <section className="py-16 bg-background w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl font-bold mb-10 text-center">Features</h3>
           <div className="lg:grid lg:grid-cols-3 lg:gap-8">
@@ -107,7 +107,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="bg-gray-100 py-20">
+      <section className="bg-muted py-20">
         <div className="container mx-auto px-4">
           <h3 className="text-3xl font-bold mb-10 text-center">How It Works</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -173,17 +173,14 @@ export default function HomePage() {
           </div>
         </div>
       </section> */}{" "}
-      <section id="contact" className="bg-blue-600 text-white py-16">
+      <section id="contact" className="py-16">
         <div className="container mx-auto text-center">
           <h3 className="text-3xl font-bold mb-8">Contact Us</h3>
           <p className="mb-4">
             Have questions or need support? Reach out to us!
           </p>
-          <a
-            href="mailto:support@languageai.com"
-            className="bg-white text-blue-600 px-6 py-3 rounded font-semibold hover:bg-gray-200"
-          >
-            Email Us
+          <a href="mailto:support@languageai.com" className="text-primary">
+            <Button className="px-6 py-3 font-semibold">Email Us</Button>
           </a>
         </div>
       </section>

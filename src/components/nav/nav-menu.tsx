@@ -13,7 +13,7 @@ export default function NavMenu() {
         {links.map((link) => (
           <Link
             href={link.href}
-            className="text-sm font-medium hover:text-foreground text-muted-foreground"
+            className="text-sm font-medium hover:text-muted-foreground text-foreground"
             key={link.href}
           >
             {link.label}

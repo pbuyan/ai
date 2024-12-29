@@ -149,9 +149,7 @@ export default function DialogueForm({
             name="topic"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md text-muted-foreground font-semibold">
-                  Topic
-                </FormLabel>
+                <FormLabel className="text-md font-semibold">Topic</FormLabel>
                 <FormControl>
                   <TopicList
                     size="md"
@@ -187,9 +185,7 @@ export default function DialogueForm({
             name="tone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md text-muted-foreground font-semibold">
-                  Tone
-                </FormLabel>
+                <FormLabel className="text-md font-semibold">Tone</FormLabel>
                 <FormControl>
                   <ToneList
                     size="md"
@@ -207,9 +203,7 @@ export default function DialogueForm({
             name="level"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-md text-muted-foreground font-semibold">
-                  Level
-                </FormLabel>
+                <FormLabel className="text-md font-semibold">Level</FormLabel>
                 <FormControl>
                   <LevelList
                     size="md"
@@ -227,7 +221,7 @@ export default function DialogueForm({
             name="language"
             render={() => (
               <FormItem>
-                <FormLabel className="text-md text-muted-foreground font-semibold">
+                <FormLabel className="text-md font-semibold">
                   Language
                 </FormLabel>
                 <FormControl>
@@ -245,7 +239,7 @@ export default function DialogueForm({
           <div className="flex justify-end py-4 content-end sticky bottom-0">
             <Button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 disabled:bg-muted-foreground text-white dark:text-gray-300"
+              className="bg-destructive hover:bg-blue-500 dark:hover:bg-blue-600 disabled:bg-muted-foreground text-white"
               disabled={generating || !isGenerationAllowed}
             >
               <Play className="h-5 w-5" />
