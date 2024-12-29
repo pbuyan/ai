@@ -4,7 +4,7 @@ import { z } from "zod";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db/drizzle";
 import {
-  User,
+  type User,
   users,
   teams,
   teamMembers,
@@ -136,7 +136,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
       .from(invitations)
       .where(
         and(
-          eq(invitations.id, parseInt(inviteId)),
+          eq(invitations.id, Number.parseInt(inviteId)),
           eq(invitations.email, email),
           eq(invitations.status, "pending")
         )
@@ -198,7 +198,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     return createCheckoutSession({ team: createdTeam, priceId });
   }
 
-  redirect("/dashboard");
+  redirect("/dialogue");
 });
 
 export async function signOut() {

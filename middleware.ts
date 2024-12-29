@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get("session");
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let isProtectedRoute;
   protectedRoutes.map((route) => pathname.startsWith(route));
 
@@ -22,7 +23,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  let res = NextResponse.next();
+  const res = NextResponse.next();
 
   if (sessionCookie) {
     try {

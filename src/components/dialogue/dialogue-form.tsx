@@ -239,7 +239,7 @@ export default function DialogueForm({
           <div className="flex justify-end py-4 content-end sticky bottom-0">
             <Button
               type="submit"
-              className="bg-destructive hover:bg-blue-500 dark:hover:bg-blue-600 disabled:bg-muted-foreground text-white"
+              variant="destructive"
               disabled={generating || !isGenerationAllowed}
             >
               <Play className="h-5 w-5" />

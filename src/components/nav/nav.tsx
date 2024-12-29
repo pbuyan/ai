@@ -47,7 +47,7 @@ export default function Nav() {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer size-9">
                   <AvatarImage alt={user.name || ""} />
-                  <AvatarFallback>
+                  <AvatarFallback className="uppercase">
                     {user.email
                       .split(" ")
                       .map((n) => n[0])

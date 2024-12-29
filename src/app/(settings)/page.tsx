@@ -179,7 +179,7 @@ export default function HomePage() {
           <p className="mb-4">
             Have questions or need support? Reach out to us!
           </p>
-          <a href="mailto:support@languageai.com" className="text-primary">
+          <a href="mailto:webinet.ca@gmail.com" className="text-primary">
             <Button className="px-6 py-3 font-semibold">Email Us</Button>
           </a>
         </div>
