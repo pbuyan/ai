@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Header from "@/components/header";
 
@@ -92,6 +92,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <section className="flex flex-col min-h-screen bg-background">
       <Header />
       {children}
+      <footer className="bg-gray-800 text-white py-6">
+        <div className="container mx-auto text-center">
+          <p>
+            &copy; {new Date().getFullYear()} Language AI. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </section>
   );
 }

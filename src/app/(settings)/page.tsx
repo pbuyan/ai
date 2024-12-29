@@ -15,6 +15,8 @@ import {
   BrainCog,
 } from "lucide-react";
 import { Terminal } from "./terminal";
+import screenSrc from "../../../public/images/say-it-better-logo.png";
+import Image from "next/image";
 
 const features = [
   {
@@ -64,12 +66,17 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+              {/* <Image
+                src={screenSrc}
+                alt="Dialogue screenshot"
+                width={1883}
+                height={896}
+              /> */}
               <Terminal />
             </div>
           </div>
         </div>
       </section>
-
       <section className="py-16 bg-white w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl font-bold mb-10 text-center">Features</h3>
@@ -100,7 +107,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <section className="bg-gray-100 py-20">
         <div className="container mx-auto px-4">
           <h3 className="text-3xl font-bold mb-10 text-center">How It Works</h3>
@@ -140,7 +146,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
@@ -167,7 +172,21 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section> */}
+      </section> */}{" "}
+      <section id="contact" className="bg-blue-600 text-white py-16">
+        <div className="container mx-auto text-center">
+          <h3 className="text-3xl font-bold mb-8">Contact Us</h3>
+          <p className="mb-4">
+            Have questions or need support? Reach out to us!
+          </p>
+          <a
+            href="mailto:support@languageai.com"
+            className="bg-white text-blue-600 px-6 py-3 rounded font-semibold hover:bg-gray-200"
+          >
+            Email Us
+          </a>
+        </div>
+      </section>
     </main>
   );
 }

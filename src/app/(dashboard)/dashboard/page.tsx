@@ -24,6 +24,7 @@ export default function HomePage() {
                 <a
                   href="https://vercel.com/templates/next.js/next-js-saas-starter"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   <Button className="bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full text-lg px-8 py-4 inline-flex items-center justify-center">
                     Deploy your own
@@ -44,6 +45,7 @@ export default function HomePage() {
           <div className="lg:grid lg:grid-cols-3 lg:gap-8">
             <div>
               <div className="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
+                {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
                 <svg viewBox="0 0 24 24" className="h-6 w-6">
                   <path
                     fill="currentColor"
@@ -112,6 +114,7 @@ export default function HomePage() {
               <a
                 href="https://github.com/leerob/next-saas-starter"
                 target="_blank"
+                rel="noreferrer"
               >
                 <Button className="bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full text-xl px-12 py-6 inline-flex items-center justify-center">
                   View the code
