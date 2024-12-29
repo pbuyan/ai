@@ -14,6 +14,7 @@ interface SelectProps {
   onChange: (value: string) => void;
   placeholder?: string;
   size?: "sm" | "md" | "lg";
+  disabled?: boolean;
 }
 
 export default function SelectSimple({
@@ -22,6 +23,7 @@ export default function SelectSimple({
   onChange,
   placeholder,
   size = "sm",
+  disabled = false,
 }: SelectProps) {
   const sizes = {
     sm: "py-4",
@@ -30,7 +32,10 @@ export default function SelectSimple({
   };
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className={`text-md text-foreground ${sizes[size]}`}>
+      <SelectTrigger
+        className={`text-md text-foreground ${sizes[size]}`}
+        disabled={disabled}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

@@ -13,6 +13,7 @@ interface SelectProps {
   options: { category: string; items: string[] }[];
   value: string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 export default function SelectNested({
@@ -20,6 +21,7 @@ export default function SelectNested({
   options,
   value,
   onChange,
+  disabled = false,
 }: SelectProps) {
   const sizes = {
     sm: "py-4",
@@ -28,7 +30,10 @@ export default function SelectNested({
   };
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className={`text-md text-foreground ${sizes[size]}`}>
+      <SelectTrigger
+        className={`text-md text-foreground ${sizes[size]}`}
+        disabled={disabled}
+      >
         <SelectValue placeholder="Select a topic..." />
       </SelectTrigger>
       <SelectContent>

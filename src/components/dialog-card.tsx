@@ -67,6 +67,7 @@ export default function DialogCard({
               onClick={onTranslationGenerateClick}
               variant={"outline"}
               className="text-foreground text-md font-semibold"
+              disabled={!text}
             >
               Traslate
               <MoveRight />
@@ -78,6 +79,7 @@ export default function DialogCard({
               <LanguageSelect
                 value={translationLanguage}
                 onChange={handleTranslationLanguageChange}
+                disabled={!text}
               />
             </div>
           </div>
@@ -118,7 +120,9 @@ export default function DialogCard({
               />
             )}
           </div>
-          <Separator className="lg:hidden" />
+          <Separator
+            className={cn("lg:hidden", { hidden: !translatedDialogue })}
+          />
           <div
             className={cn(
               "w-full lg:w-1/2 p-4 bg-gray-50 rounded-lg md:p-8 dark:bg-gray-800 min-h-48",
