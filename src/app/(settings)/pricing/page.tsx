@@ -8,6 +8,8 @@ export const revalidate = 3600;
 
 export default async function PricingPage() {
 	const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
+	console.log("prices: ", prices);
+	console.log("products: ", products);
 
 	const basePlan = products.find((product) => product.name === "Base");
 	const plusPlan = products.find((product) => product.name === "Plus");
@@ -23,7 +25,7 @@ export default async function PricingPage() {
 					price={basePrice?.unitAmount || 800}
 					interval={basePrice?.interval || "month"}
 					trialDays={basePrice?.trialPeriodDays || 7}
-					features={["Unlimited Usage", "Unlimited Workspace Members", "Email Support"]}
+					features={["Unlimited dialogues", "3 translations/day", "Email Support"]}
 					priceId={basePrice?.id}
 				/>
 				<PricingCard
@@ -31,11 +33,7 @@ export default async function PricingPage() {
 					price={plusPrice?.unitAmount || 1200}
 					interval={plusPrice?.interval || "month"}
 					trialDays={plusPrice?.trialPeriodDays || 7}
-					features={[
-						"Everything in Base, and:",
-						"Early Access to New Features",
-						"24/7 Support + Slack Access",
-					]}
+					features={["Unlimited dialogues", "Unlimited translation", "Advanced AI model"]}
 					priceId={plusPrice?.id}
 				/>
 			</div>
@@ -63,7 +61,7 @@ function PricingCard({
 			<h2 className="text-2xl font-medium mb-2">{name}</h2>
 			<p className="text-sm text-primary mb-4">with {trialDays} day free trial</p>
 			<p className="text-4xl font-medium mb-6">
-				${price / 100} <span className="text-xl font-normal text-primary">per user / {interval}</span>
+				${price / 100} <span className="text-xl font-normal text-primary">{interval}</span>
 			</p>
 			<ul className="space-y-4 mb-8">
 				{features.map((feature, index) => (
