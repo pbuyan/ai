@@ -11,15 +11,25 @@ export default async function PricingPage() {
 	console.log("prices: ", prices);
 	console.log("products: ", products);
 
+	const freePlan = products.find((product) => product.name === "Free");
 	const basePlan = products.find((product) => product.name === "Base");
 	const plusPlan = products.find((product) => product.name === "Plus");
 
+	const freePrice = prices.find((price) => price.productId === freePlan?.id);
 	const basePrice = prices.find((price) => price.productId === basePlan?.id);
 	const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
 
 	return (
 		<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-			<div className="grid md:grid-cols-2 gap-8 max-w-xl mx-auto">
+			<div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+				<PricingCard
+					name={freePlan?.name || "Free"}
+					price={freePrice?.unitAmount || 0}
+					interval={freePrice?.interval || "month"}
+					trialDays={freePrice?.trialPeriodDays || 7}
+					features={["Unlimited dialogues", "3 translations/day", "Email Support"]}
+					priceId={freePrice?.id}
+				/>
 				<PricingCard
 					name={basePlan?.name || "Base"}
 					price={basePrice?.unitAmount || 800}
