@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 import { signIn, signUp } from "./actions";
+import AuthProviders from "@/components/auth-providers";
 
 export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 	const searchParams = useSearchParams();
@@ -113,6 +114,10 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 							{mode === "signin" ? "Create an account" : "Sign in to existing account"}
 						</Link>
 					</div>
+				</div>
+
+				<div className="mt-6 text-center text-sm text-gray-500">
+					<AuthProviders />
 				</div>
 			</div>
 		</div>
