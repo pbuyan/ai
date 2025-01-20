@@ -448,50 +448,17 @@ export async function logout() {
 	redirect("/login");
 }
 
-export async function signInWithGoogle() {
-	const supabase = createClient();
-	const { data, error } = await supabase.auth.signInWithOAuth({
-		provider: "google",
-		options: {
-			redirectTo: `${PUBLIC_URL}/auth/callback`,
-		},
-	});
-
-	if (data.url) {
-		redirect(data.url); // use the redirect API for your server framework
-	}
-}
-
-export async function signInWithGithub() {
-	const supabase = createClient();
-	const { data, error } = await supabase.auth.signInWithOAuth({
-		provider: "github",
-		options: {
-			redirectTo: `${PUBLIC_URL}/auth/callback`,
-		},
-	});
-
-	if (data.url) {
-		redirect(data.url); // use the redirect API for your server framework
-	}
-}
-
 export async function signInWithProvider(provider: "google" | "github") {
-	try {
-		const supabase = createClient();
-		const { data, error } = await supabase.auth.signInWithOAuth({
-			provider,
-			options: {
-				redirectTo: `${PUBLIC_URL}/auth/callback`,
-			},
-		});
+	const supabase = createClient();
 
-		if (error) {
-			throw new Error(`Sign-in failed: ${error.message}`);
-		}
+	const { data, error } = await supabase.auth.signInWithOAuth({
+		provider,
+		options: {
+			redirectTo: `${PUBLIC_URL}/auth/callback`,
+		},
+	});
 
-		console.log("Sign-in data: ", data);
-	} catch (error) {
-		console.error("Error during sign-in :", error);
+	if (data.url) {
+		redirect(data.url);
 	}
 }
