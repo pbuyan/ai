@@ -1,6 +1,6 @@
 "use client";
 
-import { updateAccount } from "@/app/(login)/actions";
+// import { updateAccount } from "@/app/(login)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,10 +16,10 @@ type ActionState = {
 
 export default function GeneralPage() {
 	const { user } = useUser();
-	const [state, formAction, isPending] = useActionState<ActionState, FormData>(updateAccount, {
-		error: "",
-		success: "",
-	});
+	// const [state, formAction, isPending] = useActionState<ActionState, FormData>(updateAccount, {
+	// 	error: "",
+	// 	success: "",
+	// });
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -30,9 +30,9 @@ export default function GeneralPage() {
 		// When you use the `action` prop it automatically handles that for you.
 		// Another option here is to persist the values to local storage. I might
 		// explore alternative options.
-		startTransition(() => {
-			formAction(new FormData(event.currentTarget));
-		});
+		// startTransition(() => {
+		// 	formAction(new FormData(event.currentTarget));
+		// });
 	};
 
 	return (
@@ -66,7 +66,7 @@ export default function GeneralPage() {
 								required
 							/>
 						</div>
-						{state.error && <p className="text-red-500 text-sm">{state.error}</p>}
+						{/* {state.error && <p className="text-red-500 text-sm">{state.error}</p>}
 						{state.success && <p className="text-green-500 text-sm">{state.success}</p>}
 						<Button type="submit" variant="destructive" disabled={isPending}>
 							{isPending ? (
@@ -77,7 +77,7 @@ export default function GeneralPage() {
 							) : (
 								"Save Changes"
 							)}
-						</Button>
+						</Button> */}
 					</form>
 				</CardContent>
 			</Card>

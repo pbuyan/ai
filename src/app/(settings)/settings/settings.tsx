@@ -1,11 +1,11 @@
 "use client";
 
-import { removeTeamMember } from "@/app/(login)/actions";
+// import { removeTeamMember } from "@/app/(login)/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { TeamDataWithMembers, User } from "@/lib/db/schema";
-import { customerPortalAction } from "@/lib/payments/actions";
+// import { customerPortalAction } from "@/lib/payments/actions";
 import { useActionState } from "react";
 import { InviteTeamMember } from "./invite-team";
 
@@ -15,10 +15,10 @@ type ActionState = {
 };
 
 export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
-	const [removeState, removeAction, isRemovePending] = useActionState<ActionState, FormData>(
-		removeTeamMember,
-		{ error: "", success: "" },
-	);
+	// const [removeState, removeAction, isRemovePending] = useActionState<ActionState, FormData>(
+	// 	removeTeamMember,
+	// 	{ error: "", success: "" },
+	// );
 
 	const getUserDisplayName = (user: Pick<User, "id" | "name" | "email">) => {
 		return user.name || user.email || "Unknown User";
@@ -44,11 +44,11 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
 											: "No active subscription"}
 								</p>
 							</div>
-							<form action={customerPortalAction}>
+							{/* <form action={customerPortalAction}>
 								<Button type="submit" variant="outline">
 									Manage Subscription
 								</Button>
-							</form>
+							</form> */}
 						</div>
 					</div>
 				</CardContent>
@@ -79,18 +79,18 @@ export function Settings({ teamData }: { teamData: TeamDataWithMembers }) {
 										<p className="text-sm text-muted-foreground capitalize">{member.role}</p>
 									</div>
 								</div>
-								{index > 1 ? (
+								{/* {index > 1 ? (
 									<form action={removeAction}>
 										<input type="hidden" name="memberId" value={member.id} />
 										<Button type="submit" variant="outline" size="sm" disabled={isRemovePending}>
 											{isRemovePending ? "Removing..." : "Remove"}
 										</Button>
 									</form>
-								) : null}
+								) : null} */}
 							</li>
 						))}
 					</ul>
-					{removeState?.error && <p className="text-red-500 mt-4">{removeState.error}</p>}
+					{/* {removeState?.error && <p className="text-red-500 mt-4">{removeState.error}</p>} */}
 				</CardContent>
 			</Card>
 			<InviteTeamMember />

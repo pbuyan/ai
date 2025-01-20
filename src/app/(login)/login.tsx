@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { ActionState } from "@/lib/auth/middleware";
+// import type { ActionState } from "@/lib/auth/middleware";
 import { CircleIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
-import { signIn, signUp } from "./actions";
+// import { signIn, signUp } from "./actions";
 import AuthProviders from "@/components/auth-providers";
 
 export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
@@ -16,10 +16,10 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 	const redirect = searchParams.get("redirect");
 	const priceId = searchParams.get("priceId");
 	const inviteId = searchParams.get("inviteId");
-	const [state, formAction, pending] = useActionState<ActionState, FormData>(
-		mode === "signin" ? signIn : signUp,
-		{ error: "" },
-	);
+	// const [state, formAction, pending] = useActionState<ActionState, FormData>(
+	// 	mode === "signin" ? signIn : signUp,
+	// 	{ error: "" },
+	// );
 
 	return (
 		<div className="min-h-[100dvh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -33,7 +33,7 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 			</div>
 
 			<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-				<form className="space-y-6" action={formAction}>
+				{/* <form className="space-y-6" action={formAction}>
 					<input type="hidden" name="redirect" value={redirect || ""} />
 					<input type="hidden" name="priceId" value={priceId || ""} />
 					<input type="hidden" name="inviteId" value={inviteId || ""} />
@@ -90,7 +90,7 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 							)}
 						</Button>
 					</div>
-				</form>
+				</form> */}
 
 				<div className="mt-6">
 					<div className="relative">

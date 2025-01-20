@@ -1,6 +1,6 @@
 "use client";
 
-import { inviteTeamMember } from "@/app/(login)/actions";
+// import { inviteTeamMember } from "@/app/(login)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -18,10 +18,10 @@ type ActionState = {
 export function InviteTeamMember() {
 	const { user } = useUser();
 	const isOwner = user?.role === "owner";
-	const [inviteState, inviteAction, isInvitePending] = useActionState<ActionState, FormData>(
-		inviteTeamMember,
-		{ error: "", success: "" },
-	);
+	// const [inviteState, inviteAction, isInvitePending] = useActionState<ActionState, FormData>(
+	// 	inviteTeamMember,
+	// 	{ error: "", success: "" },
+	// );
 
 	return (
 		<Card>
@@ -29,7 +29,7 @@ export function InviteTeamMember() {
 				<CardTitle>Invite Team Member</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<form action={inviteAction} className="space-y-4">
+				{/* <form action={inviteAction} className="space-y-4">
 					<div>
 						<Label htmlFor="email">Email</Label>
 						<Input
@@ -69,7 +69,7 @@ export function InviteTeamMember() {
 							</>
 						)}
 					</Button>
-				</form>
+				</form> */}
 			</CardContent>
 			{!isOwner && (
 				<CardFooter>

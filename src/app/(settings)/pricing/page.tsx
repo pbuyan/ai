@@ -1,4 +1,4 @@
-import { checkoutAction } from "@/lib/payments/actions";
+// import { checkoutAction } from "@/lib/payments/actions";
 import { getStripePrices, getStripeProducts } from "@/lib/payments/stripe";
 import { Check } from "lucide-react";
 import { SubmitButton } from "./submit-button";
@@ -81,10 +81,10 @@ function PricingCard({
 					</li>
 				))}
 			</ul>
-			<form action={checkoutAction}>
+			{/* <form action={checkoutAction}>
 				<input type="hidden" name="priceId" value={priceId} />
 				<SubmitButton />
-			</form>
+			</form> */}
 		</div>
 	);
 }
