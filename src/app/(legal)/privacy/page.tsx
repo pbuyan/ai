@@ -13,16 +13,15 @@ export default function PrivacyPage() {
 			<h2>1. Information We Collect</h2>
 			<ul>
 				<li>
-					<strong>Personal Information:</strong> When you sign up or use our services, we may collect personal
+					<b>Personal Information:</b> When you sign up or use our services, we may collect personal
 					information such as your name, email address, phone number, and payment details.
 				</li>
 				<li>
-					<strong>Usage Data:</strong> We collect information about how you interact with our application,
-					including IP addresses, device types, browser types, and usage activity.
+					<b>Usage Data:</b> We collect information about how you interact with our application, including IP
+					addresses, device types, browser types, and usage activity.
 				</li>
 				<li>
-					<strong>Cookies:</strong> We use cookies and similar tracking technologies to enhance your
-					experience.
+					<b>Cookies:</b> We use cookies and similar tracking technologies to enhance your experience.
 				</li>
 			</ul>
 
