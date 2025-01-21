@@ -1,6 +1,30 @@
 import Header from "@/components/header";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import { db } from "@/utils/db/db";
+import { usersTable } from "@/utils/db/schema";
+import { eq } from "drizzle-orm";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+	title: "SayItBetter",
+	description: "Say It Better, improve your speaking skills with dialogues",
+};
+
+export default async function Layout({ children }: { children: React.ReactNode }) {
+	const supabase = createClient();
+
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	// check user plan in db
+	const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user!.email!));
+	if (checkUserInDB[0].plan === "none") {
+		console.log("User has no plan selected");
+		return redirect("/pricing");
+	}
 	return (
 		<section className="flex flex-col min-h-screen">
 			<Header />

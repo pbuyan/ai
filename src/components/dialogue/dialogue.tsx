@@ -4,7 +4,7 @@ import DialogCard from "@/components/dialog-card";
 import { useState } from "react";
 import DialogueForm from "./dialogue-form";
 
-export default function Dialogue({ teamData }: { teamData: unknown }) {
+export default function Dialogue() {
 	const [dialogue, setDialogue] = useState("");
 	const [translatedDialogue, setTranslatedDialogue] = useState("");
 	const [language, setLanguage] = useState("en-US");
@@ -50,7 +50,7 @@ export default function Dialogue({ teamData }: { teamData: unknown }) {
 			<aside className="settings w-full md:w-1/4 p-4 border-r">
 				<div className="h-auto md:h-[calc(100vh-101px)] flex px-4">
 					<DialogueForm
-						teamData={teamData}
+						// teamData={teamData}
 						onDialogueUpdateAction={handleDialogueUpdate}
 						onGenerateClickAction={handleGenerateClick}
 						language={language}

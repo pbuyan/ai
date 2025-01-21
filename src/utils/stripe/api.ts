@@ -43,7 +43,7 @@ export async function generateStripeBillingPortalLink(email: string) {
 	const user = await db.select().from(usersTable).where(eq(usersTable.email, email));
 	const portalSession = await stripe.billingPortal.sessions.create({
 		customer: user[0].stripe_id,
-		return_url: `${PUBLIC_URL}/dashboard`,
+		return_url: `${PUBLIC_URL}/dialogue`,
 	});
 	return portalSession.url;
 }

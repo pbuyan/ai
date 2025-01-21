@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useUser } from "@/lib/auth";
+// import { useUser } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 import { startTransition, useActionState } from "react";
 
@@ -15,7 +15,7 @@ type ActionState = {
 };
 
 export default function GeneralPage() {
-	const { user } = useUser();
+	// const { user } = useUser();
 	// const [state, formAction, isPending] = useActionState<ActionState, FormData>(updateAccount, {
 	// 	error: "",
 	// 	success: "",
@@ -45,7 +45,7 @@ export default function GeneralPage() {
 				</CardHeader>
 				<CardContent>
 					<form className="space-y-4" onSubmit={handleSubmit}>
-						<div>
+						{/* <div>
 							<Label htmlFor="name">Name</Label>
 							<Input
 								id="name"
@@ -65,7 +65,7 @@ export default function GeneralPage() {
 								defaultValue={user?.email || ""}
 								required
 							/>
-						</div>
+						</div> */}
 						{/* {state.error && <p className="text-red-500 text-sm">{state.error}</p>}
 						{state.success && <p className="text-green-500 text-sm">{state.success}</p>}
 						<Button type="submit" variant="destructive" disabled={isPending}>

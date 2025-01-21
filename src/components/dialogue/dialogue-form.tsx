@@ -26,7 +26,7 @@ const formSchema = z.object({
 });
 
 export default function DialogueForm({
-	teamData,
+	// teamData,
 	onDialogueUpdateAction,
 	onGenerateClickAction,
 	language,
@@ -35,7 +35,7 @@ export default function DialogueForm({
 	onLanguageUpdateAction,
 }: {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	teamData: any;
+	// teamData: any;
 	language: string;
 	generating: boolean;
 	onDialogueUpdateAction: (lang: string) => void;
@@ -56,8 +56,8 @@ export default function DialogueForm({
 		},
 	});
 
-	const isGenerationAllowed =
-		teamData.subscriptionStatus === "trialing" || teamData.subscriptionStatus === "active";
+	const isGenerationAllowed = true;
+	// teamData.subscriptionStatus === "trialing" || teamData.subscriptionStatus === "active";
 
 	const handleFormChange = () => {
 		const { topic } = form.getValues();

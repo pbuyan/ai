@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useUser } from "@/lib/auth";
+// import { useUser } from "@/lib/auth";
 import { Loader2, PlusCircle } from "lucide-react";
 import { useActionState } from "react";
 
@@ -16,8 +16,8 @@ type ActionState = {
 };
 
 export function InviteTeamMember() {
-	const { user } = useUser();
-	const isOwner = user?.role === "owner";
+	// const { user } = useUser();
+	// const isOwner = user?.role === "owner";
 	// const [inviteState, inviteAction, isInvitePending] = useActionState<ActionState, FormData>(
 	// 	inviteTeamMember,
 	// 	{ error: "", success: "" },
@@ -71,11 +71,11 @@ export function InviteTeamMember() {
 					</Button>
 				</form> */}
 			</CardContent>
-			{!isOwner && (
+			{/* {!isOwner && (
 				<CardFooter>
 					<p className="text-sm text-muted-foreground">You must be a team owner to invite new members.</p>
 				</CardFooter>
-			)}
+			)} */}
 		</Card>
 	);
 }

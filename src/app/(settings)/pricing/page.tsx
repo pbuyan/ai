@@ -1,28 +1,37 @@
 // import { checkoutAction } from "@/lib/payments/actions";
-import { getStripePrices, getStripeProducts } from "@/lib/payments/stripe";
+// import { getStripePrices, getStripeProducts } from "@/utils/payments/stripe";
+import { createStripeCheckoutSession } from "@/utils/stripe/api";
+import { createClient } from "@/utils/supabase/server";
 import { Check } from "lucide-react";
 import { SubmitButton } from "./submit-button";
+import StripePricingTable from "@/components/StripePricingTable";
 
 // Prices are fresh for one hour max
 export const revalidate = 3600;
 
 export default async function PricingPage() {
-	const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
-	console.log("prices: ", prices);
-	console.log("products: ", products);
+	const supabase = createClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	console.log("user: ", user);
+	// const checkoutSessionSecret = await createStripeCheckoutSession(user?.email!);
+	// const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
+	// console.log("prices: ", prices);
+	// console.log("products: ", products);
 
-	const freePlan = products.find((product) => product.name === "Free");
-	const basePlan = products.find((product) => product.name === "Base");
-	const plusPlan = products.find((product) => product.name === "Plus");
+	// const freePlan = products.find((product) => product.name === "Free");
+	// const basePlan = products.find((product) => product.name === "Base");
+	// const plusPlan = products.find((product) => product.name === "Plus");
 
-	const freePrice = prices.find((price) => price.productId === freePlan?.id);
-	const basePrice = prices.find((price) => price.productId === basePlan?.id);
-	const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
+	// const freePrice = prices.find((price) => price.productId === freePlan?.id);
+	// const basePrice = prices.find((price) => price.productId === basePlan?.id);
+	// const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
 
 	return (
 		<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 			<div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-				<PricingCard
+				{/* <PricingCard
 					name={freePlan?.name || "Free"}
 					price={freePrice?.unitAmount || 0}
 					interval={freePrice?.interval || "month"}
@@ -45,7 +54,8 @@ export default async function PricingPage() {
 					trialDays={plusPrice?.trialPeriodDays || 7}
 					features={["Unlimited dialogues", "Unlimited translation", "Advanced AI model"]}
 					priceId={plusPrice?.id}
-				/>
+				/> */}
+				{/* <StripePricingTable checkoutSessionSecret={checkoutSessionSecret} /> */}
 			</div>
 		</main>
 	);

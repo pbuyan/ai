@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "@/app/(login)/actions";
+// import { signOut } from "@/app/(login)/actions";
 import { ModeToggle } from "@/components/mode-toggle";
 import NavMenu from "@/components/nav/nav-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,22 +11,26 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUser } from "@/lib/auth";
+// import { useUser } from "@/lib/auth";
 import { Home, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import logoSrc from "../../../public/images/say-it-better-logo.png";
+import type { User } from "@supabase/supabase-js";
 
-export default function Nav() {
+interface UserProp extends User {
+	name: string;
+	email: string;
+	image_url: string;
+}
+
+export default function Nav({ user }: { user: User | null }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const { user, setUser } = useUser();
 	const router = useRouter();
 
 	async function handleSignOut() {
-		setUser(null);
-		await signOut();
 		router.push("/");
 	}
 	return (
@@ -44,10 +48,10 @@ export default function Nav() {
 						<DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
 							<DropdownMenuTrigger asChild>
 								<Avatar className="cursor-pointer size-9">
-									<AvatarImage alt={user.name || ""} />
+									<AvatarImage alt={user.email || ""} />
 									<AvatarFallback className="uppercase">
 										{user.email
-											.split(" ")
+											?.split(" ")
 											.map((n) => n[0])
 											.join("")}
 									</AvatarFallback>
