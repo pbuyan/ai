@@ -1,4 +1,5 @@
 "use server";
+
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -10,11 +11,13 @@ const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL
 	? process.env.NEXT_PUBLIC_WEBSITE_URL
 	: "http://localhost:3000";
 
-interface SignUpData {
+interface SignInData {
 	email: string;
-	name: string;
 	password: string;
-	passwordConfirmation?: string;
+}
+interface SignUpData extends SignInData {
+	name: string;
+	passwordConfirmation: string;
 }
 export async function resetPassword(currentState: { message: string }, formData: FormData) {
 	const supabase = createClient();
@@ -101,26 +104,26 @@ export async function signup(formData: SignUpData) {
 			plan: "none",
 		});
 
-		revalidatePath("/", "layout");
-		redirect("/dialogue");
+		return {
+			success: true,
+			message: "Account created successfully.",
+		};
 	} catch (error) {
 		console.error("Error in signup:", error);
 		return { success: false, message: "Failed to setup user account" };
 	}
 }
 
-export async function signin(currentState: { message: string }, formData: FormData) {
+export async function signin(formData: SignInData) {
 	const supabase = createClient();
 
-	const data = {
-		email: formData.get("email") as string,
-		password: formData.get("password") as string,
-	};
+	const { email, password } = formData;
 
-	const { error } = await supabase.auth.signInWithPassword(data);
+	const { error } = await supabase.auth.signInWithPassword({ email, password });
 
 	if (error) {
-		return { message: error.message };
+		console.log("error: ", error);
+		return { success: false, message: error.message };
 	}
 
 	revalidatePath("/", "layout");

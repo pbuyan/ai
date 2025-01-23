@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "@/app/(login)/actions";
+import { signup, signin } from "@/app/(login)/actions";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -18,47 +18,47 @@ type UserAccountFormInputs = {
 	passwordConfirmation: string;
 };
 
-const userAccountSchema = z
+const userSignupSchema = z
 	.object({
 		name: z.string(),
-		email: z.string().email("Invalid email format").nonempty("Email is required"),
-		password: z.string().min(8, "Password must be at least 8 characters").nonempty("Password is required"),
-		passwordConfirmation: z.string().nonempty("Password Confirmation is required"),
+		email: z.string().email("Invalid email format"),
+		password: z.string().min(8, "Password must be at least 8 characters"),
+		passwordConfirmation: z.string().min(8),
 	})
 	.refine((data) => data.password === data.passwordConfirmation, {
 		message: "Passwords must match",
 		path: ["passwordConfirmation"],
 	});
 
-export default function SignupForm() {
+const userSigninSchema = z.object({
+	email: z.string().email("Invalid email format"),
+	password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export default function SignupForm({ mode }: { mode: "signin" | "signup" }) {
 	const [isSending, setIsSending] = useState(false);
+
+	const userSchema = mode === "signin" ? userSigninSchema : userSignupSchema;
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<UserAccountFormInputs>({
-		resolver: zodResolver(userAccountSchema),
+		resolver: zodResolver(userSchema),
 	});
 
 	const onSubmit: SubmitHandler<UserAccountFormInputs> = async (data) => {
 		setIsSending(true);
 
-		try {
-			const result = await signup(data);
+		const result = mode === "signup" ? await signup(data) : await signin(data);
 
-			if (!result.success) {
-				toast.error(result.message, {
-					position: "bottom-left",
-				});
-			}
-		} catch (error) {
-			console.error(error);
-			toast.error("An error occurred while creating the account", {
+		if (!result.success) {
+			toast.error(result.message, {
 				position: "bottom-left",
 			});
-		} finally {
-			setIsSending(false);
 		}
+
+		setIsSending(false);
 	};
 
 	const renderInputField = (id: keyof UserAccountFormInputs, label: string, type: string) => (
@@ -70,13 +70,13 @@ export default function SignupForm() {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-			{renderInputField("name", "Name", "text")}
+			{mode === "signup" && renderInputField("name", "Name", "text")}
 			{renderInputField("email", "Email", "email")}
 			{renderInputField("password", "Password", "password")}
-			{renderInputField("passwordConfirmation", "Confirm Password", "password")}
+			{mode === "signup" && renderInputField("passwordConfirmation", "Confirm Password", "password")}
 
 			<Button type="submit" size="lg" variant="default" className="w-full" disabled={isSending}>
-				Create Account
+				{mode === "signup" ? "Sign Up" : "Sign In"}
 			</Button>
 		</form>
 	);
