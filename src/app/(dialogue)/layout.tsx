@@ -18,13 +18,19 @@ export default async function Layout({ children }: { children: React.ReactNode }
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
+	console.log("supabase: ", await supabase.auth.getUser());
+	console.log("user: ", user);
+
+	if (!user) {
+		redirect("/sign-in");
+	}
 
 	// check user plan in db
-	const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user!.email!));
-	if (checkUserInDB[0].plan === "none") {
-		console.log("User has no plan selected");
-		return redirect("/pricing");
-	}
+	// const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user!.email!));
+	// if (checkUserInDB[0].plan === "none") {
+	// 	console.log("User has no plan selected");
+	// 	return redirect("/pricing");
+	// }
 	return (
 		<section className="flex flex-col min-h-screen">
 			<Header />

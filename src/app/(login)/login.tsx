@@ -6,15 +6,16 @@ import { Label } from "@/components/ui/label";
 // import type { ActionState } from "@/lib/auth/middleware";
 import { CircleIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
-// import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 // import { useActionState } from "react";
 // import { signIn, signUp } from "./actions";
 import AuthProviders from "@/components/auth-providers";
+import SignupForm from "@/components/signup-form";
 
 export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
-	// const searchParams = useSearchParams();
-	// const redirect = searchParams.get("redirect");
-	// const priceId = searchParams.get("priceId");
+	const searchParams = useSearchParams();
+	const redirect = searchParams.get("redirect");
+	const priceId = searchParams.get("priceId");
 	// const inviteId = searchParams.get("inviteId");
 	// const [state, formAction, pending] = useActionState<ActionState, FormData>(
 	// 	mode === "signin" ? signIn : signUp,
@@ -33,6 +34,7 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 			</div>
 
 			<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+				<SignupForm />
 				{/* <form className="space-y-6" action={formAction}>
 					<input type="hidden" name="redirect" value={redirect || ""} />
 					<input type="hidden" name="priceId" value={priceId || ""} />
@@ -107,14 +109,14 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
 					</div>
 
 					<div className="mt-6">
-						{/* <Link
+						<Link
 							href={`${mode === "signin" ? "/sign-up" : "/sign-in"}${
 								redirect ? `?redirect=${redirect}` : ""
 							}${priceId ? `&priceId=${priceId}` : ""}`}
 							className="w-full flex justify-center py-2 px-4 font-medium hover:text-gray-500"
 						>
 							{mode === "signin" ? "Don't have an account? Sign up" : "Have an account? Sign in"}
-						</Link> */}
+						</Link>
 					</div>
 				</div>
 			</div>

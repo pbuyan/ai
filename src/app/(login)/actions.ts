@@ -96,14 +96,14 @@ export async function signup(currentState: { message: string }, formData: FormDa
 		});
 
 		revalidatePath("/", "layout");
-		redirect("/subscribe");
+		redirect("/dialogue");
 	} catch (error) {
 		console.error("Error in signup:", error);
 		return { message: "Failed to setup user account" };
 	}
 }
 
-export async function loginUser(currentState: { message: string }, formData: FormData) {
+export async function signin(currentState: { message: string }, formData: FormData) {
 	const supabase = createClient();
 
 	const data = {
@@ -118,13 +118,13 @@ export async function loginUser(currentState: { message: string }, formData: For
 	}
 
 	revalidatePath("/", "layout");
-	redirect("/dashboard");
+	redirect("/dialogue");
 }
 
 export async function logout() {
 	const supabase = createClient();
 	const { error } = await supabase.auth.signOut();
-	redirect("/login");
+	redirect("/");
 }
 
 export async function signInWithProvider(provider: "google" | "github") {

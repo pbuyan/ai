@@ -20,6 +20,8 @@ import { useState } from "react";
 import logoSrc from "../../../public/images/say-it-better-logo.png";
 import type { User } from "@supabase/supabase-js";
 
+import { logout } from "@/app/(login)/actions";
+
 interface UserProp extends User {
 	name: string;
 	email: string;
@@ -64,7 +66,7 @@ export default function Nav({ user }: { user: User | null }) {
 										<span>Settings</span>
 									</Link>
 								</DropdownMenuItem>
-								<form action={handleSignOut} className="w-full">
+								<form action={logout} className="w-full">
 									<button type="submit" className="flex w-full">
 										<DropdownMenuItem className="w-full flex-1 cursor-pointer">
 											<LogOut className="mr-2 h-4 w-4" />
