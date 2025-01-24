@@ -126,8 +126,10 @@ export async function signin(formData: SignInData) {
 		return { success: false, message: error.message };
 	}
 
-	revalidatePath("/", "layout");
-	redirect("/dialogue");
+	return { success: true };
+
+	// revalidatePath("/", "layout");
+	// redirect("/dialogue");
 }
 
 export async function logout() {

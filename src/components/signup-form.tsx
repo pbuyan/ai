@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { signup, signin } from "@/app/(login)/actions";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type UserAccountFormInputs = {
 	name: string;
@@ -36,6 +37,7 @@ const userSigninSchema = z.object({
 });
 
 export default function SignupForm({ mode }: { mode: "signin" | "signup" }) {
+	const router = useRouter();
 	const [isSending, setIsSending] = useState(false);
 
 	const userSchema = mode === "signin" ? userSigninSchema : userSignupSchema;
@@ -52,13 +54,17 @@ export default function SignupForm({ mode }: { mode: "signin" | "signup" }) {
 
 		const result = mode === "signup" ? await signup(data) : await signin(data);
 
+		if (result.success) {
+			router.push("/dialogue");
+			return;
+		}
+
 		if (!result.success) {
 			toast.error(result.message, {
 				position: "bottom-left",
 			});
+			setIsSending(false);
 		}
-
-		setIsSending(false);
 	};
 
 	const renderInputField = (id: keyof UserAccountFormInputs, label: string, type: string) => (
