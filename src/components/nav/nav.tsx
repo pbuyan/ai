@@ -1,6 +1,5 @@
 "use client";
 
-// import { signOut } from "@/app/(login)/actions";
 import { ModeToggle } from "@/components/mode-toggle";
 import NavMenu from "@/components/nav/nav-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,7 +10,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { useUser } from "@/lib/auth";
+
 import { Home, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -82,7 +81,7 @@ export default function Nav({ user }: { user: User | null }) {
 					</>
 				) : (
 					<Button asChild className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-full">
-						<Link href="/sign-up">Sign Up</Link>
+						<Link href="/sign-in">Sign In</Link>
 					</Button>
 				)}
 			</div>
