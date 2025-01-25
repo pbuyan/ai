@@ -148,9 +148,7 @@ export async function signInWithProvider(provider: "google" | "github") {
 		},
 	});
 
-	console.log("data: ", data);
-
-	// if (data.url) {
-	// 	redirect(data.url);
-	// }
+	if (data.url) {
+		redirect(data.url);
+	}
 }
