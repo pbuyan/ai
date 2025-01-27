@@ -1,4 +1,4 @@
-const GoogleIcon = () => (
+const Google = () => (
 	<svg
 		stroke="currentColor"
 		fill="currentColor"
@@ -10,4 +10,4 @@ const GoogleIcon = () => (
 	</svg>
 );
 
-export default GoogleIcon;
+export default Google;

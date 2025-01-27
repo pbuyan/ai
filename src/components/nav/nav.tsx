@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -21,19 +23,16 @@ import type { User } from "@supabase/supabase-js";
 
 import { logout } from "@/app/(login)/actions";
 
-interface UserProp extends User {
-	name: string;
-	email: string;
-	image_url: string;
-}
-
 export default function Nav({ user }: { user: User | null }) {
+	const name = user?.user_metadata.full_name;
+	const email = user?.email;
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const router = useRouter();
 
 	async function handleSignOut() {
 		router.push("/");
 	}
+
 	return (
 		<div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
 			<Link href="/" className="flex items-center">
@@ -59,6 +58,13 @@ export default function Nav({ user }: { user: User | null }) {
 								</Avatar>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end" className="flex flex-col gap-1">
+								<DropdownMenuGroup>
+									<div className="p-2">
+										{name && <p className="truncate text-sm font-medium">{name}</p>}
+										<p className="truncate text-sm text-gray-500">{email}</p>
+									</div>
+								</DropdownMenuGroup>
+								<DropdownMenuSeparator />
 								<DropdownMenuItem className="cursor-pointer">
 									<Link href="/settings" className="flex w-full items-center">
 										<Home className="mr-2 h-4 w-4" />
