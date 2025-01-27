@@ -1,6 +1,6 @@
 import Nav from "@/components/nav/nav";
 import { createClient } from "@/utils/supabase/server";
-import { getStripePlan } from "@/utils/stripe/api";
+// import { getStripePlan } from "@/utils/stripe/api";
 
 export default async function Header() {
 	const supabase = createClient();

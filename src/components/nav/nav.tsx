@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import NavMenu from "@/components/nav/nav-menu";
@@ -13,25 +13,29 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Home, LogOut } from "lucide-react";
+import { Home, LogOut, ReceiptText } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { useState, useTransition } from "react";
 import logoSrc from "../../../public/images/say-it-better-logo.png";
 import type { User } from "@supabase/supabase-js";
 
 import { logout } from "@/app/(login)/actions";
+import { generateStripeBillingPortalLink } from "@/utils/stripe/api";
 
-export default function Nav({ user }: { user: User | null }) {
+export default async function Nav({ user }: { user: User | null }) {
 	const name = user?.user_metadata.full_name;
 	const email = user?.email;
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const router = useRouter();
+	// const [isMenuOpen, setIsMenuOpen] = useState(false);
+	// const router = useRouter();
 
-	async function handleSignOut() {
-		router.push("/");
-	}
+	// async function handleSignOut() {
+	// 	router.push("/");
+	// }
+
+	// const [isPending, startTransition] = useTransition();
+	const billingPortalURL = user ? await generateStripeBillingPortalLink(user.email!) : "";
 
 	return (
 		<div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -45,7 +49,7 @@ export default function Nav({ user }: { user: User | null }) {
 				</div>
 				{user ? (
 					<>
-						<DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
 								<Avatar className="cursor-pointer size-9">
 									<AvatarImage alt={user.email || ""} />
@@ -71,6 +75,30 @@ export default function Nav({ user }: { user: User | null }) {
 										<span>Settings</span>
 									</Link>
 								</DropdownMenuItem>
+
+								<DropdownMenuItem>
+									<ReceiptText className="mr-2 h-4 w-4" />
+									<Link href={billingPortalURL}>Billing</Link>
+								</DropdownMenuItem>
+
+								{/* <DropdownMenuItem
+									className="h-8 space-x-2"
+									onSelect={(event) => {
+										event.preventDefault();
+										startTransition(async () => {
+											await billing();
+										});
+									}}
+								>
+									<Receipt className="h-4 w-4" />
+									{isPending ? (
+										<LoadingDots color="#808080" />
+									) : (
+										<>
+											<p className="text-sm">Billing</p>
+										</>
+									)}
+								</DropdownMenuItem> */}
 								<form action={logout} className="w-full">
 									<button type="submit" className="flex w-full">
 										<DropdownMenuItem className="w-full flex-1 cursor-pointer">
