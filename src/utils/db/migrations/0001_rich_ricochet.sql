@@ -1,1 +1,1 @@
-ALTER TABLE "users_table" ADD COLUMN "stripe_id" text NOT NULL;
+ALTER TABLE "users" ADD COLUMN "stripe_id" text NOT NULL;

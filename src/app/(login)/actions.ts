@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createStripeCustomer } from "@/utils/stripe/api";
 import { db } from "@/utils/db/db";
-import { usersTable } from "@/utils/db/schema";
+import { users } from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
 const PUBLIC_URL = process.env.NEXT_PUBLIC_WEBSITE_URL
 	? process.env.NEXT_PUBLIC_WEBSITE_URL
@@ -60,7 +60,7 @@ export async function signup(formData: SignUpData) {
 
 	try {
 		// Check if user exists in our database first
-		const existingDBUser = await db.select().from(usersTable).where(eq(usersTable.email, email));
+		const existingDBUser = await db.select().from(users).where(eq(users.email, email));
 
 		if (existingDBUser.length > 0) {
 			return { success: false, message: "An account with this email already exists. Please login instead." };
@@ -96,12 +96,13 @@ export async function signup(formData: SignUpData) {
 		const stripeID = await createStripeCustomer(signUpData.user.id, signUpData.user.email!, name);
 
 		// Create record in DB
-		await db.insert(usersTable).values({
+		await db.insert(users).values({
 			id: signUpData.user.id,
 			name: name,
 			email: signUpData.user.email!,
 			stripe_id: stripeID,
 			plan: "none",
+			credits: 2000,
 		});
 
 		return {

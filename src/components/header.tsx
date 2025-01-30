@@ -8,6 +8,7 @@ export default async function Header() {
 		data: { user },
 		error,
 	} = await supabase.auth.getUser();
+	// console.log("data: ", data);
 	// Get the user's plan from Stripe
 	// const stripePlan = getStripePlan(user!.email!);
 	return (

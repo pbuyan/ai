@@ -35,7 +35,7 @@ export default async function Nav({ user }: { user: User | null }) {
 	// }
 
 	// const [isPending, startTransition] = useTransition();
-	const billingPortalURL = user ? await generateStripeBillingPortalLink(user.email!) : "";
+	const billingPortalURL = user ? await generateStripeBillingPortalLink(user.email!) : "null";
 
 	return (
 		<div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">

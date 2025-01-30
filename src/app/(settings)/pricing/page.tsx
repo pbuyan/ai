@@ -1,20 +1,20 @@
-// import { checkoutAction } from "@/lib/payments/actions";
-// import { getStripePrices, getStripeProducts } from "@/utils/payments/stripe";
-import { createStripeCheckoutSession } from "@/utils/stripe/api";
-import { createClient } from "@/utils/supabase/server";
-import { Check } from "lucide-react";
-import { SubmitButton } from "./submit-button";
-import StripePricingTable from "@/components/StripePricingTable";
+// import { checkoutAction } from "@/utils/stripe/actions";
+// import { getStripePrices, getStripeProducts } from "@/utils/stripe/api";
+// import { createStripeCheckoutSession } from "@/utils/stripe/api";
+// import { createClient } from "@/utils/supabase/server";
+// import { Check } from "lucide-react";
+// import { SubmitButton } from "./submit-button";
+// import StripePricingTable from "@/components/StripePricingTable";
 
 // Prices are fresh for one hour max
 export const revalidate = 3600;
 
 export default async function PricingPage() {
-	const supabase = createClient();
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-	console.log("user: ", user);
+	// const supabase = createClient();
+	// const {
+	// 	data: { user },
+	// } = await supabase.auth.getUser();
+	// console.log("user: ", user);
 	// const checkoutSessionSecret = await createStripeCheckoutSession(user?.email!);
 	// const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
 	// console.log("prices: ", prices);
@@ -78,19 +78,19 @@ function PricingCard({
 }) {
 	return (
 		<div className="pt-6">
-			<h2 className="text-2xl font-medium mb-2">{name}</h2>
+			{/* <h2 className="text-2xl font-medium mb-2">{name}</h2>
 			<p className="text-sm text-primary mb-4">with {trialDays} day free trial</p>
 			<p className="text-4xl font-medium mb-6">
 				${price / 100} <span className="text-xl font-normal text-primary">{interval}</span>
-			</p>
-			<ul className="space-y-4 mb-8">
+			</p> */}
+			{/* <ul className="space-y-4 mb-8">
 				{features.map((feature, index) => (
 					<li key={feature} className="flex items-start">
 						<Check className="h-5 w-5 text-destructive mr-2 mt-0.5 flex-shrink-0" />
 						<span className="text-primary">{feature}</span>
 					</li>
 				))}
-			</ul>
+			</ul> */}
 			{/* <form action={checkoutAction}>
 				<input type="hidden" name="priceId" value={priceId} />
 				<SubmitButton />

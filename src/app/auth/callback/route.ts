@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 // The client you created from the Server-Side Auth instructions
 import { createClient } from "@/utils/supabase/server";
 import { db } from "@/utils/db/db";
-import { usersTable } from "@/utils/db/schema";
+import { users } from "@/utils/db/schema";
 import { createStripeCustomer } from "@/utils/stripe/api";
 import { eq } from "drizzle-orm";
 
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
 			const user = userData.user;
 
-			const checkUserInDB = await db.select().from(usersTable).where(eq(usersTable.email, user.email!));
+			const checkUserInDB = await db.select().from(users).where(eq(users.email, user.email!));
 
 			const isUserInDB = checkUserInDB.length > 0;
 
@@ -34,12 +34,13 @@ export async function GET(request: Request) {
 				try {
 					const stripeID = await createStripeCustomer(user.id, user.email!, user.user_metadata.full_name);
 
-					await db.insert(usersTable).values({
+					await db.insert(users).values({
 						id: user.id,
 						name: user.user_metadata.full_name,
 						email: user.email!,
 						stripe_id: stripeID,
 						plan: "none",
+						credits: 2000,
 					});
 				} catch (dbError) {
 					console.error("Error inserting user into database:", dbError);

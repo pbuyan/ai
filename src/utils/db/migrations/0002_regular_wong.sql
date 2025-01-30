@@ -1,1 +1,1 @@
-ALTER TABLE "users_table" ALTER COLUMN "id" SET DATA TYPE text;
+ALTER TABLE "users" ALTER COLUMN "id" SET DATA TYPE text;
