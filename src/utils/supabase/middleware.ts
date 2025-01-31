@@ -1,8 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
-import type { User } from "@/utils/db/schema";
-import { redirect } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
-import { getUser } from "@/utils/db/queries";
 
 export async function updateSession(request: NextRequest) {
 	let supabaseResponse = NextResponse.next({
@@ -73,22 +70,4 @@ export async function updateSession(request: NextRequest) {
 	// of sync and terminate the user's session prematurely!
 
 	return supabaseResponse;
-}
-
-type ActionWithUserFunction<T> = (formData: FormData, user: User) => Promise<T>;
-
-export function withUser<T>(action: ActionWithUserFunction<T>) {
-	return async (formData: FormData): Promise<T> => {
-		const user = await getUser();
-		if (!user) {
-			redirect("/sign-in");
-		}
-
-		// const team = await getTeamForUser(user.id);
-		// if (!team) {
-		// 	throw new Error("Team not found");
-		// }
-
-		return action(formData, user);
-	};
 }

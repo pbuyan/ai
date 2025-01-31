@@ -20,7 +20,7 @@ interface SignUpData extends SignInData {
 	passwordConfirmation: string;
 }
 export async function resetPassword(currentState: { message: string }, formData: FormData) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const passwordData = {
 		password: formData.get("password") as string,
 		confirm_password: formData.get("confirm_password") as string,
@@ -42,7 +42,7 @@ export async function resetPassword(currentState: { message: string }, formData:
 }
 
 export async function forgotPassword(currentState: { message: string }, formData: FormData) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const email = formData.get("email") as string;
 	const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
 		redirectTo: `${PUBLIC_URL}/forgot-password/reset`,
@@ -54,7 +54,7 @@ export async function forgotPassword(currentState: { message: string }, formData
 	redirect(`/forgot-password/success`);
 }
 export async function signup(formData: SignUpData) {
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	const { name, email, password } = formData;
 
@@ -116,7 +116,7 @@ export async function signup(formData: SignUpData) {
 }
 
 export async function signin(formData: SignInData) {
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	const { email, password } = formData;
 
@@ -134,13 +134,13 @@ export async function signin(formData: SignInData) {
 }
 
 export async function logout() {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { error } = await supabase.auth.signOut();
 	redirect("/");
 }
 
 export async function signInWithProvider(provider: "google" | "github") {
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider,
