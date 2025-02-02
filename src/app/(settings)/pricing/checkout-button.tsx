@@ -8,7 +8,6 @@ import { useTransition } from "react";
 
 export default function (product: Product | null | undefined) {
 	const [isPending, startTransition] = useTransition();
-	console.log("product ZZZ:", product);
 
 	const checkoutWithProps = checkout.bind(null, {
 		price_id: "price_1Qhzs9Ew05PK7u0G6xSiLk1F",

@@ -88,8 +88,6 @@ export async function createCheckoutSession({
 	user: User;
 	priceId: string;
 }) {
-	// const user = await getUser();
-
 	if (!user) {
 		redirect(`/sign-up?redirect=checkout&priceId=${priceId}`);
 	}
@@ -106,7 +104,7 @@ export async function createCheckoutSession({
 		success_url: `${process.env.BASE_URL}/api/stripe/checkout?session_id={CHECKOUT_SESSION_ID}`,
 		cancel_url: `${process.env.BASE_URL}/pricing`,
 		customer: user.stripe_id || undefined,
-		client_reference_id: user.id.toString(),
+		client_reference_id: user.id,
 		allow_promotion_codes: true,
 		subscription_data: {
 			trial_period_days: 14,
@@ -127,7 +125,7 @@ export async function createCustomerPortalSession(user: User) {
 	if (configurations.data.length > 0) {
 		configuration = configurations.data[0];
 	} else {
-		const product = await stripe.products.retrieve(team.stripeProductId);
+		const product = await stripe.products.retrieve(user.stripe_id);
 		if (!product.active) {
 			throw new Error("Team's product is not active in Stripe");
 		}
@@ -169,7 +167,7 @@ export async function createCustomerPortalSession(user: User) {
 	}
 
 	return stripe.billingPortal.sessions.create({
-		customer: team.stripeCustomerId,
+		customer: user.stripe_id,
 		return_url: `${process.env.BASE_URL}/dashboard`,
 		configuration: configuration.id,
 	});

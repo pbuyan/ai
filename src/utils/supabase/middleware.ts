@@ -1,7 +1,10 @@
-import type { User } from "@/utils/db/schema";
+import { db } from "@/utils/db/db";
+import { users, type User } from "@/utils/db/schema";
+import { createClient } from "@/utils/supabase/server";
 import { createServerClient } from "@supabase/ssr";
 import { redirect } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
+import { eq } from "drizzle-orm";
 
 export async function updateSession(request: NextRequest) {
 	let supabaseResponse = NextResponse.next({
@@ -73,21 +76,25 @@ export async function updateSession(request: NextRequest) {
 
 	return supabaseResponse;
 }
-
 type ActionWithTeamFunction<T> = (formData: FormData, user: User) => Promise<T>;
 
 export function withTeam<T>(action: ActionWithTeamFunction<T>) {
-	return async (formData: FormData, user: User): Promise<T> => {
-		// const user = await getUser();
-		if (!user) {
+	return async (formData: FormData): Promise<T> => {
+		const supabase = await createClient();
+		const { data, error } = await supabase.auth.getUser();
+
+		if (error || !data?.user) {
+			console.error("Failed to get user:", error);
 			redirect("/sign-in");
+			throw new Error("User is not authenticated");
 		}
 
-		// const team = await getTeamForUser(user.id);
-		// if (!team) {
-		// 	throw new Error("Team not found");
-		// }
+		const [userInDB] = await db.select().from(users).where(eq(users.email, data.user.email!));
 
-		return action(formData, user);
+		if (!userInDB) {
+			throw new Error("User not found in database");
+		}
+
+		return action(formData, userInDB);
 	};
 }

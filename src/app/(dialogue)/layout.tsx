@@ -25,7 +25,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
 	// check user plan in db
 	const checkUserInDB = await db.select().from(users).where(eq(users.email, user!.email!));
-	console.log("checkUserInDB: ", checkUserInDB);
+
 	if (
 		!checkUserInDB[0].credits &&
 		(checkUserInDB[0].subscription_expiry || checkUserInDB[0].subscription_expiry)
