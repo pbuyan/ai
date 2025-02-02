@@ -5,6 +5,8 @@ import { getStripePrices, getStripeProducts } from "@/utils/stripe/api";
 import { Check } from "lucide-react";
 import { SubmitButton } from "./submit-button";
 import type { User } from "@/utils/db/schema";
+import CheckoutButton from "@/app/(settings)/pricing/checkout-button";
+import type { Product } from "@/lib/types";
 // import StripePricingTable from "@/components/StripePricingTable";
 
 // Prices are fresh for one hour max
@@ -18,7 +20,7 @@ export default async function PricingPage() {
 	// console.log("user: ", user);
 	// const checkoutSessionSecret = await createStripeCheckoutSession(user?.email!);
 	const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
-	console.log("prices: ", prices);
+	// console.log("prices: ", prices);
 	console.log("products: ", products);
 
 	const freePlan = products.find((product) => product.name === "Free");
@@ -33,6 +35,7 @@ export default async function PricingPage() {
 		<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 			<div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
 				<PricingCard
+					product={products[0]}
 					name={freePlan?.name || "Free"}
 					price={freePrice?.unitAmount || 0}
 					interval={freePrice?.interval || "month"}
@@ -40,7 +43,8 @@ export default async function PricingPage() {
 					features={["Unlimited dialogues", "3 translations/day", "Email Support"]}
 					priceId={freePrice?.id}
 				/>
-				<PricingCard
+				{/* <PricingCard
+					product={freePlan}
 					name={basePlan?.name || "Base"}
 					price={basePrice?.unitAmount || 800}
 					interval={basePrice?.interval || "month"}
@@ -49,13 +53,14 @@ export default async function PricingPage() {
 					priceId={basePrice?.id}
 				/>
 				<PricingCard
+					product={freePlan}
 					name={plusPlan?.name || "Plus"}
 					price={plusPrice?.unitAmount || 1200}
 					interval={plusPrice?.interval || "month"}
 					trialDays={plusPrice?.trialPeriodDays || 7}
 					features={["Unlimited dialogues", "Unlimited translation", "Advanced AI model"]}
 					priceId={plusPrice?.id}
-				/>
+				/> */}
 				{/* <StripePricingTable checkoutSessionSecret={checkoutSessionSecret} /> */}
 			</div>
 		</main>
@@ -63,6 +68,7 @@ export default async function PricingPage() {
 }
 
 function PricingCard({
+	product,
 	name,
 	price,
 	interval,
@@ -70,6 +76,7 @@ function PricingCard({
 	features,
 	priceId,
 }: {
+	product: Product;
 	name: string;
 	price: number;
 	interval: string;
@@ -92,6 +99,7 @@ function PricingCard({
 					</li>
 				))}
 			</ul>
+			<CheckoutButton product={product} />
 			{/* <form action={(formData: FormData) => checkoutAction(formData, {} as User)}>
 				<input type="hidden" name="priceId" value={priceId} />
 				<SubmitButton />
