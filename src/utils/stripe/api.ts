@@ -12,7 +12,7 @@ export async function getStripePrices() {
 	const prices = await stripe.prices.list({
 		expand: ["data.product"],
 		active: true,
-		type: "recurring",
+		// type: "recurring",
 	});
 
 	return prices.data.map((price) => ({
@@ -22,6 +22,7 @@ export async function getStripePrices() {
 		currency: price.currency,
 		interval: price.recurring?.interval,
 		trialPeriodDays: price.recurring?.trial_period_days,
+		type: price.type,
 	}));
 }
 
@@ -84,9 +85,11 @@ export async function generateStripeBillingPortalLink(email: string) {
 export async function createCheckoutSession({
 	user,
 	priceId,
+	mode,
 }: {
 	user: User;
 	priceId: string;
+	mode: "subscription" | "payment";
 }) {
 	if (!user) {
 		redirect(`/sign-up?redirect=checkout&priceId=${priceId}`);
@@ -100,14 +103,14 @@ export async function createCheckoutSession({
 				quantity: 1,
 			},
 		],
-		mode: "subscription",
-		success_url: `${process.env.BASE_URL}/api/stripe/checkout?session_id={CHECKOUT_SESSION_ID}`,
+		mode: mode,
+		success_url: `${process.env.BASE_URL}/api/stripe/checkout/${mode}?session_id={CHECKOUT_SESSION_ID}`,
 		cancel_url: `${process.env.BASE_URL}/pricing`,
 		customer: user.stripe_id || undefined,
 		client_reference_id: user.id,
 		allow_promotion_codes: true,
 		subscription_data: {
-			trial_period_days: 14,
+			// trial_period_days: 14,
 		},
 	});
 

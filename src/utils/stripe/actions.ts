@@ -10,7 +10,8 @@ import { getDomain } from "@/lib/utils";
 
 export const checkoutAction = withTeam(async (formData, user) => {
 	const priceId = formData.get("priceId") as string;
-	await createCheckoutSession({ user: user, priceId });
+	const mode = formData.get("mode") as "subscription" | "payment";
+	await createCheckoutSession({ user: user, priceId, mode });
 });
 
 export const customerPortalAction = withTeam(async (_, team) => {

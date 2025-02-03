@@ -12,8 +12,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { eq } from "drizzle-orm";
 
-import { Home, LogOut, ReceiptText } from "lucide-react";
+import { Coins, Home, LogOut, ReceiptText } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 // import { useRouter } from "next/navigation";
@@ -23,10 +24,19 @@ import type { User } from "@supabase/supabase-js";
 
 import { logout } from "@/app/(login)/actions";
 import { generateStripeBillingPortalLink } from "@/utils/stripe/api";
+import { db } from "@/utils/db/db";
+import { users } from "@/utils/db/schema";
 
 export default async function Nav({ user }: { user: User | null }) {
 	const name = user?.user_metadata.full_name;
 	const email = user?.email;
+	let credits;
+	console.log("user: ", user);
+
+	if (user) {
+		credits = (await db.select().from(users).where(eq(users.email, user!.email!)))[0].credits;
+		console.log("credits: ", credits);
+	}
 	// const [isMenuOpen, setIsMenuOpen] = useState(false);
 	// const router = useRouter();
 
@@ -69,6 +79,10 @@ export default async function Nav({ user }: { user: User | null }) {
 									</div>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
+								<DropdownMenuItem className="space-x-2" disabled>
+									<Coins className="h-4 w-4" />
+									<p className="text-sm">{credits} Credits</p>
+								</DropdownMenuItem>
 								<DropdownMenuItem className="cursor-pointer">
 									<Link href="/settings" className="flex w-full items-center">
 										<Home className="mr-2 h-4 w-4" />
