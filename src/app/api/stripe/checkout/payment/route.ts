@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
 	try {
 		const session = await stripe.checkout.sessions.retrieve(sessionId, {
-			expand: ["customer", "payment"],
+			expand: ["customer", "payment_intent"],
 		});
 
 		if (!session.customer || typeof session.customer === "string") {
