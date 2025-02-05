@@ -91,3 +91,7 @@ export async function runGoogleAiTranslate(dialogue: string, language: string, t
 		return { error: "Failed to translate dialogue" };
 	}
 }
+
+export async function usegeCount() {
+	return "1";
+}
