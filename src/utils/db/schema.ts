@@ -7,7 +7,7 @@ export const users = pgTable("users", {
 	plan: text("plan").notNull(),
 	stripe_id: text("stripe_id").notNull(),
 	credits: integer("credits").notNull(),
-	subscription_expiry: text("subscription_expiry"),
+	subscription_expiry: integer("subscription_expiry"),
 	deleted_at: timestamp("deleted_at"),
 });
 

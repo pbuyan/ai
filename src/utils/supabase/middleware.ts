@@ -76,9 +76,9 @@ export async function updateSession(request: NextRequest) {
 
 	return supabaseResponse;
 }
-type ActionWithTeamFunction<T> = (formData: FormData, user: User) => Promise<T>;
+type ActionWithUserFunction<T> = (formData: FormData, user: User) => Promise<T>;
 
-export function withTeam<T>(action: ActionWithTeamFunction<T>) {
+export function withUser<T>(action: ActionWithUserFunction<T>) {
 	return async (formData: FormData): Promise<T> => {
 		const supabase = await createClient();
 		const { data, error } = await supabase.auth.getUser();

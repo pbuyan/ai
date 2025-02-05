@@ -2,20 +2,20 @@
 
 import { redirect } from "next/navigation";
 import { createCheckoutSession, createCustomerPortalSession } from "./api";
-import { withTeam } from "@/utils/supabase/middleware";
+import { withUser } from "@/utils/supabase/middleware";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import Stripe from "stripe";
 import { getDomain } from "@/lib/utils";
 
-export const checkoutAction = withTeam(async (formData, user) => {
+export const checkoutAction = withUser(async (formData, user) => {
 	const priceId = formData.get("priceId") as string;
 	const mode = formData.get("mode") as "subscription" | "payment";
 	await createCheckoutSession({ user: user, priceId, mode });
 });
 
-export const customerPortalAction = withTeam(async (_, team) => {
-	const portalSession = await createCustomerPortalSession(team);
+export const customerPortalAction = withUser(async (_, user) => {
+	const portalSession = await createCustomerPortalSession(user);
 	redirect(portalSession.url);
 });
 

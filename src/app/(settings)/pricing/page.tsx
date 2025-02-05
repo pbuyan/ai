@@ -8,22 +8,17 @@ export const revalidate = 3600;
 
 export default async function PricingPage() {
 	const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
-	console.log("products: ", products);
-	console.log("prices: ", prices);
+	// console.log("products: ", products);
+	// console.log("prices: ", prices);
 
-	const basePlan = products.find((product) => product.name === "Base");
-	const plusPlan = products.find((product) => product.name === "Plus");
 	const creditsPlan = products.find((product) => product.name === "Starter");
 	const subscriptionPlan = products.find((product) => product.name === "Pro");
-
-	const basePrice = prices.find((price) => price.productId === basePlan?.id);
-	const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
 
 	const creditsPrice = prices.find((price) => price.productId === creditsPlan?.id);
 	const subscriptionPrice = prices.find((price) => price.productId === subscriptionPlan?.id);
 
-	console.log("creditsPrice: ", creditsPrice);
-	console.log("subscriptionPrice: ", subscriptionPrice);
+	// console.log("creditsPrice: ", creditsPrice);
+	// console.log("subscriptionPrice: ", subscriptionPrice);
 	return (
 		<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 			<div className="grid md:grid-cols-2 gap-8 max-w-xl mx-auto">
