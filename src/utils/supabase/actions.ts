@@ -2,6 +2,7 @@ import { db } from "@/utils/db/db";
 import { users } from "@/utils/db/schema";
 import { createClient } from "@/utils/supabase/server";
 import { eq } from "drizzle-orm";
+import { isAfter } from "date-fns";
 
 export async function getAuthUser() {
 	const supabase = await createClient();
@@ -14,6 +15,8 @@ export async function getAuthUser() {
 
 	try {
 		const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
+		const isPayed = userFromDB.credits > 0;
+
 		const authUser = {
 			id: userFromDB.id,
 			name: userFromDB.name,
@@ -23,6 +26,7 @@ export async function getAuthUser() {
 			credits: userFromDB.credits,
 			subscription_expiry: userFromDB.subscription_expiry,
 			deleted_at: userFromDB.deleted_at,
+			isPayed: isPayed,
 		};
 		return authUser;
 	} catch (err) {

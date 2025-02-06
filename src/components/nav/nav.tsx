@@ -28,10 +28,14 @@ import { db } from "@/utils/db/db";
 import { users } from "@/utils/db/schema";
 import { getAuthUser } from "@/utils/supabase/actions";
 
+import { isAfter } from "date-fns";
+
 export default async function Nav() {
 	const authUser = await getAuthUser();
-	console.log("authUser: ", authUser);
-
+	console.log("Date: ", new Date());
+	if (authUser?.subscription_expiry) {
+		console.log("subscription_expiry: ", new Date(authUser.subscription_expiry));
+	}
 	const billingPortalURL = authUser ? await generateStripeBillingPortalLink(authUser.email!) : "null";
 
 	return (
