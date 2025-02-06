@@ -26,26 +26,13 @@ import { logout } from "@/app/(login)/actions";
 import { generateStripeBillingPortalLink } from "@/utils/stripe/api";
 import { db } from "@/utils/db/db";
 import { users } from "@/utils/db/schema";
+import { getAuthUser } from "@/utils/supabase/actions";
 
-export default async function Nav({ user }: { user: User | null }) {
-	const name = user?.user_metadata.full_name;
-	const email = user?.email;
-	let credits;
-	console.log("user: ", user);
+export default async function Nav() {
+	const authUser = await getAuthUser();
+	console.log("authUser: ", authUser);
 
-	if (user) {
-		credits = (await db.select().from(users).where(eq(users.email, user!.email!)))[0].credits;
-		console.log("credits: ", credits);
-	}
-	// const [isMenuOpen, setIsMenuOpen] = useState(false);
-	// const router = useRouter();
-
-	// async function handleSignOut() {
-	// 	router.push("/");
-	// }
-
-	// const [isPending, startTransition] = useTransition();
-	const billingPortalURL = user ? await generateStripeBillingPortalLink(user.email!) : "null";
+	const billingPortalURL = authUser ? await generateStripeBillingPortalLink(authUser.email!) : "null";
 
 	return (
 		<div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -57,14 +44,14 @@ export default async function Nav({ user }: { user: User | null }) {
 				<div className="ml-2">
 					<ModeToggle />
 				</div>
-				{user ? (
+				{authUser ? (
 					<>
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
 								<Avatar className="cursor-pointer size-9">
-									<AvatarImage alt={user.email || ""} />
+									<AvatarImage alt={authUser.email || ""} />
 									<AvatarFallback className="uppercase">
-										{user.email
+										{authUser.email
 											?.split(" ")
 											.map((n) => n[0])
 											.join("")}
@@ -74,14 +61,14 @@ export default async function Nav({ user }: { user: User | null }) {
 							<DropdownMenuContent align="end" className="flex flex-col gap-1">
 								<DropdownMenuGroup>
 									<div className="p-2">
-										{name && <p className="truncate text-sm font-medium">{name}</p>}
-										<p className="truncate text-sm text-gray-500">{email}</p>
+										{authUser && <p className="truncate text-sm font-medium">{authUser.name}</p>}
+										<p className="truncate text-sm text-gray-500">{authUser.email}</p>
 									</div>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem className="space-x-2" disabled>
 									<Coins className="h-4 w-4" />
-									<p className="text-sm">{credits} Credits</p>
+									<p className="text-sm">{authUser?.credits} Credits</p>
 								</DropdownMenuItem>
 								<DropdownMenuItem className="cursor-pointer">
 									<Link href="/settings" className="flex w-full items-center">
