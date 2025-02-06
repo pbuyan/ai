@@ -15,7 +15,25 @@ export async function getAuthUser() {
 
 	try {
 		const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
-		const isPayed = userFromDB.credits > 0;
+		const subscriptionEnd = userFromDB.subscription_expiry
+			? new Date(userFromDB.subscription_expiry * 1000)
+			: null;
+
+		const isPayed =
+			userFromDB.credits > 0 || (subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date()));
+
+		let remainingUsage = "";
+
+		if (isPayed && subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date())) {
+			remainingUsage = "Unlimited";
+		}
+
+		if (
+			(isPayed && !subscriptionEnd) ||
+			(subscriptionEnd && !isAfter(new Date(subscriptionEnd), new Date()))
+		) {
+			remainingUsage = userFromDB.credits + " Credits";
+		}
 
 		const authUser = {
 			id: userFromDB.id,
@@ -24,9 +42,10 @@ export async function getAuthUser() {
 			plan: userFromDB.plan,
 			stripe_id: userFromDB.stripe_id,
 			credits: userFromDB.credits,
-			subscription_expiry: userFromDB.subscription_expiry,
+			subscription_expiry: subscriptionEnd,
 			deleted_at: userFromDB.deleted_at,
 			isPayed: isPayed,
+			remainingUsage: remainingUsage,
 		};
 		return authUser;
 	} catch (err) {

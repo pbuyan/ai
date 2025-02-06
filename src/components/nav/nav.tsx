@@ -1,5 +1,3 @@
-// "use client";
-
 import { ModeToggle } from "@/components/mode-toggle";
 import NavMenu from "@/components/nav/nav-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,30 +10,20 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { eq } from "drizzle-orm";
 
 import { Coins, Home, LogOut, ReceiptText } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
-// import { useState, useTransition } from "react";
 import logoSrc from "../../../public/images/say-it-better-logo.png";
-import type { User } from "@supabase/supabase-js";
 
 import { logout } from "@/app/(login)/actions";
 import { generateStripeBillingPortalLink } from "@/utils/stripe/api";
-import { db } from "@/utils/db/db";
-import { users } from "@/utils/db/schema";
 import { getAuthUser } from "@/utils/supabase/actions";
-
-import { isAfter } from "date-fns";
 
 export default async function Nav() {
 	const authUser = await getAuthUser();
-	console.log("Date: ", new Date());
-	if (authUser?.subscription_expiry) {
-		console.log("subscription_expiry: ", new Date(authUser.subscription_expiry));
-	}
+	console.log("authUser: ", authUser);
+
 	const billingPortalURL = authUser ? await generateStripeBillingPortalLink(authUser.email!) : "null";
 
 	return (
@@ -72,7 +60,7 @@ export default async function Nav() {
 								<DropdownMenuSeparator />
 								<DropdownMenuItem className="space-x-2" disabled>
 									<Coins className="h-4 w-4" />
-									<p className="text-sm">{authUser?.credits} Credits</p>
+									<p className="text-sm">{authUser?.remainingUsage}</p>
 								</DropdownMenuItem>
 								<DropdownMenuItem className="cursor-pointer">
 									<Link href="/settings" className="flex w-full items-center">

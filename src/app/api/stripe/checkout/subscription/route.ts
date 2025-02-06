@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
 			expand: ["customer", "subscription"],
 		});
 
+		console.log("session: ", session);
+
 		if (!session.customer || typeof session.customer === "string") {
 			throw new Error("Invalid customer data from Stripe.");
 		}
