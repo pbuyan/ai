@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/context/theme";
-import { UsageProvider } from "@/context/usage";
+import { UserProvider } from "@/context/user";
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 
@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 
 const manrope = Manrope({ subsets: ["latin"] });
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
@@ -29,7 +29,7 @@ export default function RootLayout({
 		>
 			<body className="min-h-[100dvh] bg-gray-50">
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-					<UsageProvider>{children}</UsageProvider>
+					<UserProvider>{children}</UserProvider>
 					<Toaster />
 				</ThemeProvider>
 			</body>
