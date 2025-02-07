@@ -2,14 +2,16 @@ import { checkoutAction } from "@/utils/stripe/actions";
 import { Check } from "lucide-react";
 import { getStripePrices, getStripeProducts } from "@/utils/stripe/api";
 import { SubmitButton } from "./submit-button";
+import { getAuthUser } from "@/utils/supabase/actions";
+import { Badge } from "@/components/ui/badge";
 
 // Prices are fresh for one hour max
 export const revalidate = 3600;
 
 export default async function PricingPage() {
+	const authUser = await getAuthUser();
+	const activePlan = authUser?.activePlan;
 	const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
-	// console.log("products: ", products);
-	// console.log("prices: ", prices);
 
 	const creditsPlan = products.find((product) => product.name === "Starter");
 	const subscriptionPlan = products.find((product) => product.name === "Pro");
@@ -17,8 +19,6 @@ export default async function PricingPage() {
 	const creditsPrice = prices.find((price) => price.productId === creditsPlan?.id);
 	const subscriptionPrice = prices.find((price) => price.productId === subscriptionPlan?.id);
 
-	// console.log("creditsPrice: ", creditsPrice);
-	// console.log("subscriptionPrice: ", subscriptionPrice);
 	return (
 		<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 			<div className="grid md:grid-cols-2 gap-8 max-w-xl mx-auto">
@@ -26,16 +26,16 @@ export default async function PricingPage() {
 					name={creditsPlan?.name || "Credits"}
 					price={creditsPrice?.unitAmount || 800}
 					interval={creditsPrice?.interval}
-					trialDays={creditsPrice?.trialPeriodDays || 7}
 					features={["Get 2000 credits", "Unlimited Workspace Members", "Email Support"]}
 					priceId={creditsPrice?.id}
 					mode={"payment"}
+					activePlan={activePlan as string}
 				/>
+
 				<PricingCard
 					name={subscriptionPlan?.name || "Unlimited"}
 					price={subscriptionPrice?.unitAmount || 1200}
 					interval={subscriptionPrice?.interval || "month"}
-					trialDays={subscriptionPrice?.trialPeriodDays || 7}
 					features={[
 						"Everything in Base, and:",
 						"Early Access to New Features",
@@ -43,6 +43,7 @@ export default async function PricingPage() {
 					]}
 					priceId={subscriptionPrice?.id}
 					mode={"subscription"}
+					activePlan={activePlan as string}
 				/>
 			</div>
 		</main>
@@ -53,22 +54,29 @@ function PricingCard({
 	name,
 	price,
 	interval,
-	trialDays,
 	features,
 	priceId,
 	mode,
+	activePlan,
 }: {
 	name: string;
 	price: number;
 	interval?: string;
-	trialDays: number;
 	features: string[];
 	priceId?: string;
 	mode: "subscription" | "payment";
+	activePlan: string | null;
 }) {
 	return (
 		<div className="pt-6">
-			<h2 className="text-2xl font-medium text-primary mb-2">{name}</h2>
+			<div className="flex">
+				<h2 className="text-2xl font-medium text-primary mb-2">{name}</h2>
+				{name == activePlan && (
+					<Badge variant="outline" className="h-4">
+						Current
+					</Badge>
+				)}
+			</div>
 			{/* <p className="text-sm text-gray-600 mb-4">with {trialDays} day free trial</p> */}
 			<p className="text-4xl font-medium text-primary mb-6">
 				${price / 100} {interval && <span className="text-xl font-normal text-gray-600">/{interval}</span>}
@@ -84,7 +92,7 @@ function PricingCard({
 			<form action={checkoutAction}>
 				<input type="hidden" name="priceId" value={priceId} />
 				<input type="hidden" name="mode" value={mode} />
-				<SubmitButton />
+				<SubmitButton plan={name} activePlan={activePlan} />
 			</form>
 		</div>
 	);

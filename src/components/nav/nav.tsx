@@ -11,7 +11,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Coins, Home, LogOut, ReceiptText, Banknote } from "lucide-react";
+import { Coins, LogOut, ReceiptText, Banknote } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import logoSrc from "../../../public/images/say-it-better-logo.png";
@@ -22,7 +22,6 @@ import { getAuthUser } from "@/utils/supabase/actions";
 
 export default async function Nav() {
 	const authUser = await getAuthUser();
-	console.log("authUser: ", authUser);
 
 	const billingPortalURL = authUser ? await generateStripeBillingPortalLink(authUser.email!) : "null";
 

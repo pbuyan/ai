@@ -23,9 +23,11 @@ export async function getAuthUser() {
 			userFromDB.credits > 0 || (subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date()));
 
 		let remainingUsage = "";
+		let activePlan = null;
 
 		if (isPayed && subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date())) {
 			remainingUsage = "Unlimited";
+			activePlan = "Pro";
 		}
 
 		if (
@@ -33,6 +35,7 @@ export async function getAuthUser() {
 			(subscriptionEnd && !isAfter(new Date(subscriptionEnd), new Date()))
 		) {
 			remainingUsage = userFromDB.credits + " Credits";
+			activePlan = "Starter";
 		}
 
 		const authUser = {
@@ -46,6 +49,7 @@ export async function getAuthUser() {
 			deleted_at: userFromDB.deleted_at,
 			isPayed: isPayed,
 			remainingUsage: remainingUsage,
+			activePlan: activePlan,
 		};
 		return authUser;
 	} catch (err) {
