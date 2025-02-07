@@ -27,15 +27,12 @@ export default async function Nav() {
 	const billingPortalURL = authUser ? await generateStripeBillingPortalLink(authUser.email!) : "null";
 
 	return (
-		<div className="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+		<div className="px-4 sm:px-6 lg:px-4 py-4 flex justify-between items-center">
 			<Link href="/" className="flex items-center">
 				<Image src={logoSrc} className="h-9 w-9" alt="Logo" />
 				<span className="ml-2 text-xl font-semibold text-foreground">SayItBetter </span>
 			</Link>
 			<div className="flex items-center space-x-4 ">
-				<div className="ml-2">
-					<ModeToggle />
-				</div>
 				{authUser ? (
 					<>
 						<DropdownMenu>
@@ -102,15 +99,19 @@ export default async function Nav() {
 								</form>
 							</DropdownMenuContent>
 						</DropdownMenu>
-						<div className="sm:order-first">
-							<NavMenu />
-						</div>
 					</>
 				) : (
 					<Button asChild className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-full">
 						<Link href="/sign-in">Sign In</Link>
 					</Button>
 				)}
+
+				<div className="sm:order-first">
+					<NavMenu />
+				</div>
+				<div>
+					<ModeToggle />
+				</div>
 			</div>
 		</div>
 	);
