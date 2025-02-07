@@ -11,7 +11,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Coins, Home, LogOut, ReceiptText } from "lucide-react";
+import { Coins, Home, LogOut, ReceiptText, Banknote } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import logoSrc from "../../../public/images/say-it-better-logo.png";
@@ -32,7 +32,7 @@ export default async function Nav() {
 				<Image src={logoSrc} className="h-9 w-9" alt="Logo" />
 				<span className="ml-2 text-xl font-semibold text-foreground">SayItBetter </span>
 			</Link>
-			<div className="flex items-center space-x-4 ">
+			<div className="flex items-center gap-4">
 				{authUser ? (
 					<>
 						<DropdownMenu>
@@ -60,9 +60,9 @@ export default async function Nav() {
 									<p className="text-sm">{authUser?.remainingUsage}</p>
 								</DropdownMenuItem>
 								<DropdownMenuItem className="cursor-pointer">
-									<Link href="/settings" className="flex w-full items-center">
-										<Home className="mr-2 h-4 w-4" />
-										<span>Settings</span>
+									<Link href="/pricing" className="flex w-full items-center">
+										<Banknote className="mr-2 h-4 w-4" />
+										<span>Pricing</span>
 									</Link>
 								</DropdownMenuItem>
 
