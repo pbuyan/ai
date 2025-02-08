@@ -1,10 +1,14 @@
+"use server";
+
 import { db } from "@/utils/db/db";
 import { users } from "@/utils/db/schema";
 import { createClient } from "@/utils/supabase/server";
 import { eq } from "drizzle-orm";
 import { isAfter } from "date-fns";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
-export async function getAuthUser() {
+async function getSubabaseUser() {
 	const supabase = await createClient();
 	const {
 		data: { user },
@@ -12,7 +16,11 @@ export async function getAuthUser() {
 	} = await supabase.auth.getUser();
 
 	if (!user || error) return null;
+	return user;
+}
 
+export async function getAuthUser() {
+	const user = await getSubabaseUser();
 	try {
 		const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
 		const subscriptionEnd = userFromDB.subscription_expiry
@@ -55,5 +63,29 @@ export async function getAuthUser() {
 	} catch (err) {
 		console.error(err);
 		return null;
+	}
+}
+
+export async function decreaseCredits(num = 20) {
+	const user = await getSubabaseUser();
+	const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
+	const updatedCredits = Math.max(0, userFromDB.credits - num);
+
+	const userToUpdate = { ...userFromDB, credits: updatedCredits };
+	try {
+		await db
+			.update(users)
+			.set({
+				credits: updatedCredits,
+			})
+			.where(eq(users.id, userFromDB.id));
+
+		// getAuthUser();
+
+		// revalidatePath("/dialogue");
+		revalidateTag("dialogue");
+		// redirect("/dialogue");
+	} catch (dbError) {
+		console.error("Error updating user credits into database:", dbError);
 	}
 }
