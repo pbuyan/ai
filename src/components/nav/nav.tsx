@@ -19,6 +19,7 @@ import logoSrc from "../../../public/images/say-it-better-logo.png";
 import { logout } from "@/app/(login)/actions";
 import { generateStripeBillingPortalLink } from "@/utils/stripe/api";
 import { getAuthUser } from "@/utils/supabase/actions";
+import UserDropdown from "@/components/nav/user-dropdown";
 
 export default async function Nav() {
 	const authUser = await getAuthUser();
@@ -33,72 +34,7 @@ export default async function Nav() {
 			</Link>
 			<div className="flex items-center gap-4">
 				{authUser ? (
-					<>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Avatar className="cursor-pointer size-9">
-									<AvatarImage alt={authUser.email || ""} />
-									<AvatarFallback className="uppercase">
-										{authUser.email
-											?.split(" ")
-											.map((n) => n[0])
-											.join("")}
-									</AvatarFallback>
-								</Avatar>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end" className="flex flex-col gap-1">
-								<DropdownMenuGroup>
-									<div className="p-2">
-										{authUser && <p className="truncate text-sm font-medium">{authUser.name}</p>}
-										<p className="truncate text-sm text-gray-500">{authUser.email}</p>
-									</div>
-								</DropdownMenuGroup>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem className="space-x-2" disabled>
-									<Coins className="h-4 w-4" />
-									<p className="text-sm">{authUser?.remainingUsage}</p>
-								</DropdownMenuItem>
-								<DropdownMenuItem className="cursor-pointer">
-									<Link href="/pricing" className="flex w-full items-center">
-										<Banknote className="mr-2 h-4 w-4" />
-										<span>Pricing</span>
-									</Link>
-								</DropdownMenuItem>
-
-								<DropdownMenuItem>
-									<ReceiptText className="mr-2 h-4 w-4" />
-									<Link href={billingPortalURL}>Billing</Link>
-								</DropdownMenuItem>
-
-								{/* <DropdownMenuItem
-									className="h-8 space-x-2"
-									onSelect={(event) => {
-										event.preventDefault();
-										startTransition(async () => {
-											await billing();
-										});
-									}}
-								>
-									<Receipt className="h-4 w-4" />
-									{isPending ? (
-										<LoadingDots color="#808080" />
-									) : (
-										<>
-											<p className="text-sm">Billing</p>
-										</>
-									)}
-								</DropdownMenuItem> */}
-								<form action={logout} className="w-full">
-									<button type="submit" className="flex w-full">
-										<DropdownMenuItem className="w-full flex-1 cursor-pointer">
-											<LogOut className="mr-2 h-4 w-4" />
-											<span>Sign out</span>
-										</DropdownMenuItem>
-									</button>
-								</form>
-							</DropdownMenuContent>
-						</DropdownMenu>
-					</>
+					<UserDropdown billingPortalURL={billingPortalURL} />
 				) : (
 					<Button asChild className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-full">
 						<Link href="/sign-in">Sign In</Link>
