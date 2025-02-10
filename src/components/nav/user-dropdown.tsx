@@ -15,10 +15,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { logout } from "@/app/(login)/actions";
 
-export default function UserDropdown(billingPortalURL: string) {
-	const { user, isLoading } = useUser();
+export default function UserDropdown({ billingPortalURL }: { billingPortalURL: string }) {
+	const { user, session, isLoading } = useUser();
 
 	console.log("user: ", user);
+	console.log("session: ", session);
 	return (
 		<>
 			<DropdownMenu>

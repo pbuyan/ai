@@ -12,5 +12,5 @@ export interface Product {
 export interface AuthUser extends User {
 	remainingUsage?: string;
 	isPayed?: boolean;
-	activePlan: string;
+	activePlan?: string;
 }

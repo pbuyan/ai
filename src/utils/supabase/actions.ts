@@ -21,17 +21,25 @@ async function getSubabaseUser() {
 
 export async function getAuthUser() {
 	const user = await getSubabaseUser();
+	let isPayed = false;
 	try {
 		const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
 		const subscriptionEnd = userFromDB.subscription_expiry
-			? new Date(userFromDB.subscription_expiry * 1000)
+			? (new Date(userFromDB.subscription_expiry * 1000) as unknown as number)
 			: null;
 
-		const isPayed =
-			userFromDB.credits > 0 || (subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date()));
+		if (userFromDB.credits > 0) {
+			isPayed = true;
+		}
+
+		if (!isPayed && subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date())) {
+			isPayed = true;
+		}
+		// isPayed =
+		// 	userFromDB.credits > 0 || (subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date()));
 
 		let remainingUsage = "";
-		let activePlan = null;
+		let activePlan = "";
 
 		if (isPayed && subscriptionEnd && isAfter(new Date(subscriptionEnd), new Date())) {
 			remainingUsage = "Unlimited";

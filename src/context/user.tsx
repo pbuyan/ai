@@ -5,28 +5,45 @@ import { useRouter } from "next/navigation";
 // import { createClient } from "@supabase/auth-helpers-nextjs";
 import type { Session, User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
+import { getAuthUser } from "@/utils/supabase/actions";
+import type { AuthUser } from "@/lib/types";
 
 interface UserContextType {
-	user: User | null;
+	user: AuthUser | null;
 	session: Session | null;
 	isLoading: boolean;
 	signOut: () => void;
+	fetchAuthUser: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	const supabase = createClient();
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<AuthUser | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 
+	const fetchAuthUser = async () => {
+		try {
+			const authUser = await getAuthUser();
+			setUser(authUser ?? null);
+		} catch (error) {
+			console.error("Error fetching user from database:", error);
+			return null;
+		}
+	};
+
 	useEffect(() => {
 		const getUser = async () => {
 			const { data: sessionData } = await supabase.auth.getSession();
+			console.log("sessionData: ", sessionData);
 			setSession(sessionData?.session ?? null);
-			setUser(sessionData?.session?.user ?? null);
+
+			if (sessionData?.session?.user) {
+				fetchAuthUser();
+			}
 			setIsLoading(false);
 		};
 
@@ -35,7 +52,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 		// Listen for auth state changes
 		const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
 			setSession(session);
-			setUser(session?.user ?? null);
+			// setUser(session?.user ?? null);
 			setIsLoading(false);
 		});
 
@@ -52,7 +69,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	};
 
 	return (
-		<UserContext.Provider value={{ user, session, isLoading, signOut }}>{children}</UserContext.Provider>
+		<UserContext.Provider value={{ user, session, isLoading, signOut, fetchAuthUser }}>
+			{children}
+		</UserContext.Provider>
 	);
 };
 

@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import LanguageSelect from "../languages/language-list";
+import { useUser } from "@/context/user";
 
 const formSchema = z.object({
 	topic: z.string().min(2, {
@@ -44,11 +45,12 @@ export default function DialogueForm({
 	onLanguageUpdateAction: (lang: string) => void;
 }) {
 	const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
+	const { fetchAuthUser } = useUser();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			topic: "",
+			topic: "Everyday Conversations Small Talk",
 			customTopic: "",
 			tone: "Friendly and Approachable Warm",
 			level: "intermediate",
@@ -104,6 +106,7 @@ export default function DialogueForm({
 		try {
 			const data = await runGoogleAi(topicSelected, tone, languageSelected as string, level);
 			handleDialogueUpdate(data.text as string);
+			fetchAuthUser();
 		} catch (err) {
 			console.error(err);
 		} finally {
