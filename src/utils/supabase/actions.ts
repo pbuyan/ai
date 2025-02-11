@@ -54,6 +54,10 @@ export async function getAuthUser() {
 			activePlan = "Starter";
 		}
 
+		if (!isPayed) {
+			remainingUsage = "0 Credits";
+		}
+
 		const authUser = {
 			id: userFromDB.id,
 			name: userFromDB.name,
@@ -79,20 +83,13 @@ export async function decreaseCredits(num = 20) {
 	const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
 	const updatedCredits = Math.max(0, userFromDB.credits - num);
 
-	const userToUpdate = { ...userFromDB, credits: updatedCredits };
 	try {
 		await db
 			.update(users)
 			.set({
-				credits: updatedCredits,
+				credits: updatedCredits < 0 ? 0 : updatedCredits,
 			})
 			.where(eq(users.id, userFromDB.id));
-
-		// getAuthUser();
-
-		// revalidatePath("/dialogue");
-		revalidateTag("dialogue");
-		// redirect("/dialogue");
 	} catch (dbError) {
 		console.error("Error updating user credits into database:", dbError);
 	}
