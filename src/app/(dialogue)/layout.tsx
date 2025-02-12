@@ -12,7 +12,10 @@ export const metadata: Metadata = {
 	description: "Say It Better, improve your speaking skills with dialogues",
 };
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+	children,
+	modal,
+}: { children: React.ReactNode; modal: React.ReactNode }) {
 	const supabase = await createClient();
 
 	const {
@@ -37,6 +40,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 		<section className="flex flex-col min-h-screen">
 			<Header />
 			{children}
+			{modal}
 		</section>
 	);
 }

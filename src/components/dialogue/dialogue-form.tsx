@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import LanguageSelect from "../languages/language-list";
 import { useUser } from "@/context/user";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	topic: z.string().min(2, {
@@ -45,7 +46,8 @@ export default function DialogueForm({
 	onLanguageUpdateAction: (lang: string) => void;
 }) {
 	const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
-	const { fetchAuthUser } = useUser();
+	const { fetchAuthUser, user } = useUser();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -57,9 +59,6 @@ export default function DialogueForm({
 			language,
 		},
 	});
-
-	const isGenerationAllowed = true;
-	// teamData.subscriptionStatus === "trialing" || teamData.subscriptionStatus === "active";
 
 	const handleFormChange = () => {
 		const { topic } = form.getValues();
@@ -84,6 +83,11 @@ export default function DialogueForm({
 		const level = data.level;
 
 		const languageSelected = getLanguageName(language);
+
+		if (!user?.isPayed) {
+			router.push("/dialogue?modal=true");
+			return;
+		}
 
 		if ((!topic && !customTopic) || (topic === "Custom My custom topic" && !customTopic)) {
 			form.setError("customTopic", {
@@ -206,7 +210,7 @@ export default function DialogueForm({
 					/>
 
 					<div className="flex justify-end py-4 content-end sticky bottom-0">
-						<Button type="submit" variant="destructive" disabled={generating || !isGenerationAllowed}>
+						<Button type="submit" variant="destructive" disabled={generating}>
 							<Play className="h-5 w-5" />
 							{generating ? "Generating..." : "Generate"}
 						</Button>
