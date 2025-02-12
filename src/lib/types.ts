@@ -14,3 +14,20 @@ export interface AuthUser extends User {
 	isPayed?: boolean;
 	activePlan?: string;
 }
+
+export interface StripeProduct {
+	id: string;
+	name: string;
+	description: string;
+	defaultPriceId?: string;
+}
+
+export interface StripePrices {
+	id: string;
+	productId: string;
+	unitAmount: number | null;
+	currency: string;
+	interval: string | undefined;
+	trialPeriodDays: number | null | undefined;
+	type: string;
+}

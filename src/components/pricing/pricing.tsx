@@ -1,16 +1,15 @@
 "use client";
 
 import PricingCard from "@/components/pricing/pricing-card";
-import { getStripePrices, getStripeProducts } from "@/utils/stripe/api";
-import { getAuthUser } from "@/utils/supabase/actions";
+import type { StripePrices, StripeProduct } from "@/lib/types";
 
-export default async function Pricing() {
-	const authUser = await getAuthUser();
-	const activePlan = authUser?.activePlan;
-	const [prices, products] = await Promise.all([getStripePrices(), getStripeProducts()]);
-
-	const creditsPlan = products.find((product) => product.name === "Starter");
-	const subscriptionPlan = products.find((product) => product.name === "Pro");
+export default function Pricing({
+	products,
+	prices,
+	activePlan,
+}: { products: StripeProduct[]; prices: StripePrices[]; activePlan: string }) {
+	const creditsPlan = products ? products.find((product) => product.name === "Starter") : null;
+	const subscriptionPlan = products ? products.find((product) => product.name === "Pro") : null;
 
 	const creditsPrice = prices.find((price) => price.productId === creditsPlan?.id);
 	const subscriptionPrice = prices.find((price) => price.productId === subscriptionPlan?.id);

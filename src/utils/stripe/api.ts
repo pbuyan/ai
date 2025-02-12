@@ -35,7 +35,7 @@ export async function getStripeProducts() {
 	return products.data.map((product) => ({
 		id: product.id,
 		name: product.name,
-		description: product.description,
+		description: product.description || "",
 		defaultPriceId:
 			typeof product.default_price === "string" ? product.default_price : product.default_price?.id,
 	}));
