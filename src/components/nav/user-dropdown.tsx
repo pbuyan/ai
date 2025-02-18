@@ -18,8 +18,6 @@ import { logout } from "@/app/(login)/actions";
 export default function UserDropdown({ billingPortalURL }: { billingPortalURL: string }) {
 	const { user, session, isLoading } = useUser();
 
-	console.log("user: ", user);
-	console.log("session: ", session);
 	return (
 		<>
 			<DropdownMenu>

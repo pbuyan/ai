@@ -22,6 +22,9 @@ async function getSubabaseUser() {
 export async function getAuthUser() {
 	const user = await getSubabaseUser();
 	let isPayed = false;
+
+	if (!user) return;
+
 	try {
 		const userFromDB = (await db.select().from(users).where(eq(users.email, user!.email!)))[0];
 		const subscriptionEnd = userFromDB.subscription_expiry

@@ -14,8 +14,9 @@ export const metadata: Metadata = {
 
 export default async function Layout({
 	children,
-	modal,
-}: { children: React.ReactNode; modal: React.ReactNode }) {
+	// modal,
+	// }: { children: React.ReactNode; modal: React.ReactNode }) {
+}: { children: React.ReactNode }) {
 	const supabase = await createClient();
 
 	const {
@@ -40,7 +41,7 @@ export default async function Layout({
 		<section className="flex flex-col min-h-screen">
 			<Header />
 			{children}
-			{modal}
+			{/* {modal} */}
 		</section>
 	);
 }

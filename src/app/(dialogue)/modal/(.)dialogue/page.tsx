@@ -1,4 +1,4 @@
-import PricingDialogue from "@/app/(dialogue)/@modal/(.)dialogue/pricing-dialogue";
+import PricingDialogue from "@/app/(dialogue)/modal/(.)dialogue/pricing-dialogue";
 import { getStripePrices, getStripeProducts } from "@/utils/stripe/api";
 import { getAuthUser } from "@/utils/supabase/actions";
 import { Suspense } from "react";

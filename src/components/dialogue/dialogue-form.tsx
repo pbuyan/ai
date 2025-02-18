@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { cn, getLanguageName } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Play } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import LanguageSelect from "../languages/language-list";
@@ -85,7 +85,8 @@ export default function DialogueForm({
 		const languageSelected = getLanguageName(language);
 
 		if (!user?.isPayed) {
-			router.push("/dialogue?modal=true");
+			// router.push("/dialogue?modal=true");
+			router.push("/pricing");
 			return;
 		}
 
@@ -117,6 +118,10 @@ export default function DialogueForm({
 			onGenerateClickAction(false);
 		}
 	};
+
+	useEffect(function getUserData() {
+		fetchAuthUser();
+	}, []);
 
 	const handleDialogueUpdate = (data: string) => {
 		onDialogueUpdateAction(data);

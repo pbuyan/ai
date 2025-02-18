@@ -38,7 +38,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		const getUser = async () => {
 			const { data: sessionData } = await supabase.auth.getSession();
-			console.log("sessionData: ", sessionData);
 			setSession(sessionData?.session ?? null);
 
 			if (sessionData?.session?.user) {
@@ -52,6 +51,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 		// Listen for auth state changes
 		const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
 			setSession(session);
+			fetchAuthUser();
 			// setUser(session?.user ?? null);
 			setIsLoading(false);
 		});
