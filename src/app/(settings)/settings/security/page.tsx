@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAccount, updatePassword } from "@/app/(login)/actions";
+// import { deleteAccount, updatePassword } from "@/app/(login)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,15 +14,15 @@ type ActionState = {
 };
 
 export default function SecurityPage() {
-	const [passwordState, passwordAction, isPasswordPending] = useActionState<ActionState, FormData>(
-		updatePassword,
-		{ error: "", success: "" },
-	);
+	// const [passwordState, passwordAction, isPasswordPending] = useActionState<ActionState, FormData>(
+	// 	updatePassword,
+	// 	{ error: "", success: "" },
+	// );
 
-	const [deleteState, deleteAction, isDeletePending] = useActionState<ActionState, FormData>(deleteAccount, {
-		error: "",
-		success: "",
-	});
+	// const [deleteState, deleteAction, isDeletePending] = useActionState<ActionState, FormData>(deleteAccount, {
+	// 	error: "",
+	// 	success: "",
+	// });
 
 	const handlePasswordSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -33,15 +33,15 @@ export default function SecurityPage() {
 		// When you use the `action` prop it automatically handles that for you.
 		// Another option here is to persist the values to local storage. I might
 		// explore alternative options.
-		startTransition(() => {
-			passwordAction(new FormData(event.currentTarget));
-		});
+		// startTransition(() => {
+		// 	passwordAction(new FormData(event.currentTarget));
+		// });
 	};
 
 	const handleDeleteSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		startTransition(() => {
-			deleteAction(new FormData(event.currentTarget));
+			// deleteAction(new FormData(event.currentTarget));
 		});
 	};
 
@@ -89,7 +89,7 @@ export default function SecurityPage() {
 								maxLength={100}
 							/>
 						</div>
-						{passwordState.error && <p className="text-red-500 text-sm">{passwordState.error}</p>}
+						{/* {passwordState.error && <p className="text-red-500 text-sm">{passwordState.error}</p>}
 						{passwordState.success && <p className="text-green-500 text-sm">{passwordState.success}</p>}
 						<Button type="submit" variant="destructive" disabled={isPasswordPending}>
 							{isPasswordPending ? (
@@ -103,7 +103,7 @@ export default function SecurityPage() {
 									Update Password
 								</>
 							)}
-						</Button>
+						</Button> */}
 					</form>
 				</CardContent>
 			</Card>
@@ -128,7 +128,7 @@ export default function SecurityPage() {
 								maxLength={100}
 							/>
 						</div>
-						{deleteState.error && <p className="text-red-500 text-sm">{deleteState.error}</p>}
+						{/* {deleteState.error && <p className="text-red-500 text-sm">{deleteState.error}</p>}
 						<Button
 							type="submit"
 							variant="destructive"
@@ -146,7 +146,7 @@ export default function SecurityPage() {
 									Delete Account
 								</>
 							)}
-						</Button>
+						</Button> */}
 					</form>
 				</CardContent>
 			</Card>

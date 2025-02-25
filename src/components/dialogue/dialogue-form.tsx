@@ -10,10 +10,12 @@ import { Input } from "@/components/ui/input";
 import { cn, getLanguageName } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Play } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import LanguageSelect from "../languages/language-list";
+import { useUser } from "@/context/user";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	topic: z.string().min(2, {
@@ -26,7 +28,7 @@ const formSchema = z.object({
 });
 
 export default function DialogueForm({
-	teamData,
+	// teamData,
 	onDialogueUpdateAction,
 	onGenerateClickAction,
 	language,
@@ -35,7 +37,7 @@ export default function DialogueForm({
 	onLanguageUpdateAction,
 }: {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	teamData: any;
+	// teamData: any;
 	language: string;
 	generating: boolean;
 	onDialogueUpdateAction: (lang: string) => void;
@@ -44,20 +46,19 @@ export default function DialogueForm({
 	onLanguageUpdateAction: (lang: string) => void;
 }) {
 	const [showCustomTopicInput, setShowCustomTopicInput] = useState(false);
+	const { fetchAuthUser, user } = useUser();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			topic: "",
+			topic: "Everyday Conversations Small Talk",
 			customTopic: "",
 			tone: "Friendly and Approachable Warm",
 			level: "intermediate",
 			language,
 		},
 	});
-
-	const isGenerationAllowed =
-		teamData.subscriptionStatus === "trialing" || teamData.subscriptionStatus === "active";
 
 	const handleFormChange = () => {
 		const { topic } = form.getValues();
@@ -83,6 +84,12 @@ export default function DialogueForm({
 
 		const languageSelected = getLanguageName(language);
 
+		if (!user?.isPayed) {
+			// router.push("/dialogue?modal=true");
+			router.push("/pricing");
+			return;
+		}
+
 		if ((!topic && !customTopic) || (topic === "Custom My custom topic" && !customTopic)) {
 			form.setError("customTopic", {
 				type: "custom",
@@ -104,12 +111,17 @@ export default function DialogueForm({
 		try {
 			const data = await runGoogleAi(topicSelected, tone, languageSelected as string, level);
 			handleDialogueUpdate(data.text as string);
+			fetchAuthUser();
 		} catch (err) {
 			console.error(err);
 		} finally {
 			onGenerateClickAction(false);
 		}
 	};
+
+	useEffect(function getUserData() {
+		fetchAuthUser();
+	}, []);
 
 	const handleDialogueUpdate = (data: string) => {
 		onDialogueUpdateAction(data);
@@ -203,7 +215,7 @@ export default function DialogueForm({
 					/>
 
 					<div className="flex justify-end py-4 content-end sticky bottom-0">
-						<Button type="submit" variant="destructive" disabled={generating || !isGenerationAllowed}>
+						<Button type="submit" variant="destructive" disabled={generating}>
 							<Play className="h-5 w-5" />
 							{generating ? "Generating..." : "Generate"}
 						</Button>

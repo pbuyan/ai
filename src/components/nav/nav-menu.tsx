@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const links = [
 	{ label: "Dialogue", href: "/dialogue" },
-	{ label: "Pricing", href: "/pricing" },
+	// { label: "Pricing", href: "/pricing" },
 ];
 
 export default function NavMenu() {

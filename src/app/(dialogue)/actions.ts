@@ -1,5 +1,6 @@
 "use server";
 
+import { decreaseCredits } from "@/utils/supabase/actions";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import OpenAI from "openai";
 
@@ -70,6 +71,7 @@ export async function runGoogleAi(topic: string, tone: string, language: string,
 
 	try {
 		const response = await chatSession.sendMessage(prompt);
+		decreaseCredits();
 		return { text: response.response.text() };
 	} catch (error) {
 		console.error(error);
@@ -90,4 +92,8 @@ export async function runGoogleAiTranslate(dialogue: string, language: string, t
 		console.error(error);
 		return { error: "Failed to translate dialogue" };
 	}
+}
+
+export async function usegeCount() {
+	return "1";
 }

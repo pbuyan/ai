@@ -1,6 +1,6 @@
 import Nav from "@/components/nav/nav";
 
-export default function Header() {
+export default async function Header() {
 	return (
 		<header className="border-b border-border bg-background">
 			<Nav />
