@@ -55,7 +55,7 @@ export default function Dialogue() {
 						onGenerateClickAction={handleGenerateClick}
 						language={language}
 						generating={generating}
-						onTranslatedDialiogUpdateAction={handleTranslatedDialiogUpdate}
+						onTranslatedDialogueUpdateAction={handleTranslatedDialiogUpdate}
 						onLanguageUpdateAction={handleLanguageUpdate}
 					/>{" "}
 				</div>
@@ -66,7 +66,6 @@ export default function Dialogue() {
 						text={dialogue}
 						translatedDialogue={translatedDialogue}
 						language={language}
-						onLanguageUpdate={handleLanguageUpdate}
 						onTranslationLanguageUpdate={handleTranslationLanguageUpdate}
 						generating={generating}
 						generatingTranslation={translationGenerating}
