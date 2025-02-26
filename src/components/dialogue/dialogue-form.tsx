@@ -16,6 +16,7 @@ import { z } from "zod";
 import LanguageSelect from "../languages/language-list";
 import { useUser } from "@/context/user";
 import { useRouter } from "next/navigation";
+import type { AuthUser } from "@/lib/types";
 
 // Define a constant for the custom topic option to avoid magic strings
 const CUSTOM_TOPIC_OPTION = "Custom My custom topic";
@@ -31,19 +32,22 @@ const formSchema = z.object({
 export default function DialogueForm({
 	language,
 	generating,
-	onDialogueUpdateAction,
-	onGenerateClickAction,
-	onTranslatedDialogueUpdateAction, // corrected the typo here
+	onGenerateDialogueAction,
 	onLanguageUpdateAction,
+	user,
 }: {
 	language: string;
 	generating: boolean;
-	onDialogueUpdateAction: (dialogue: string) => void;
-	onGenerateClickAction: (isGenerating: boolean) => void;
-	onTranslatedDialogueUpdateAction: (dialogue: string) => void;
+	onGenerateDialogueAction: (
+		topic: string,
+		customTopic: string,
+		tone: string,
+		level: string,
+		language: string,
+	) => void;
 	onLanguageUpdateAction: (lang: string) => void;
+	user: AuthUser | null;
 }) {
-	const { fetchAuthUser, user } = useUser();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -60,16 +64,6 @@ export default function DialogueForm({
 	// Use watch to conditionally render the custom topic input
 	const selectedTopic = form.watch("topic");
 	const showCustomTopicInput = selectedTopic === CUSTOM_TOPIC_OPTION;
-
-	useEffect(() => {
-		fetchAuthUser();
-	}, [fetchAuthUser]);
-
-	// A helper to update dialogue text and reset the translated dialogue
-	const updateDialogue = (dialogue: string) => {
-		onDialogueUpdateAction(dialogue);
-		onTranslatedDialogueUpdateAction("");
-	};
 
 	const handleLanguageChange = (lang: string) => {
 		onLanguageUpdateAction(lang);
@@ -92,20 +86,8 @@ export default function DialogueForm({
 			return;
 		}
 
-		onGenerateClickAction(true);
-		updateDialogue("");
-
 		const topicSelected = customTopic || topic;
-
-		try {
-			const result = await runGoogleAi(topicSelected, tone, languageSelected as string, level);
-			updateDialogue(result.text as string);
-			fetchAuthUser();
-		} catch (err) {
-			console.error(err);
-		} finally {
-			onGenerateClickAction(false);
-		}
+		onGenerateDialogueAction(topicSelected, customTopic, tone, level, languageSelected as string);
 	};
 
 	return (

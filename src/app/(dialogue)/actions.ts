@@ -87,6 +87,7 @@ export async function runGoogleAiTranslate(dialogue: string, language: string, t
 
 	try {
 		const result = await model.generateContent(prompt);
+		decreaseCredits();
 		return { text: result.response.text() };
 	} catch (error) {
 		console.error(error);
