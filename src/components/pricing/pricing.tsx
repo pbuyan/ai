@@ -19,7 +19,7 @@ export default function Pricing({
 				name={creditsPlan?.name || "Credits"}
 				price={creditsPrice?.unitAmount || 800}
 				interval={creditsPrice?.interval}
-				features={["Get 2000 credits", "Unlimited Workspace Members", "Email Support"]}
+				features={["Get 2000 credits (100 generations/translations)"]}
 				priceId={creditsPrice?.id}
 				mode={"payment"}
 				activePlan={activePlan as string}
@@ -29,7 +29,7 @@ export default function Pricing({
 				name={subscriptionPlan?.name || "Unlimited"}
 				price={subscriptionPrice?.unitAmount || 1200}
 				interval={subscriptionPrice?.interval || "month"}
-				features={["Everything in Base, and:", "Early Access to New Features", "24/7 Support + Slack Access"]}
+				features={["Get unlimited generations/translations"]}
 				priceId={subscriptionPrice?.id}
 				mode={"subscription"}
 				activePlan={activePlan as string}
