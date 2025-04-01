@@ -1,10 +1,10 @@
 "use client";
+
 import { runGoogleAi, runGoogleAiTranslate } from "@/app/(dialogue)/actions";
 import DialogCard from "@/components/dialog-card";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import DialogueForm from "./dialogue-form";
 import { useUser } from "@/context/user";
-import { getLanguageName } from "@/lib/utils";
 
 export default function Dialogue() {
 	const [dialogue, setDialogue] = useState("");
@@ -12,7 +12,7 @@ export default function Dialogue() {
 	const [language, setLanguage] = useState("en-US");
 	const [translationLanguage, setTranslationLanguage] = useState("fr");
 	const [generating, setGenerating] = useState(false);
-	const [translationGenerating, setTransletionGenerating] = useState(false);
+	const [translationGenerating, setTranslationGenerating] = useState(false);
 
 	const { fetchAuthUser, user } = useUser();
 
@@ -20,21 +20,9 @@ export default function Dialogue() {
 		setDialogue(res);
 	};
 
-	const handleLanguageUpdate = (lang: string) => {
-		setLanguage(lang);
-	};
+	const handleLanguageUpdate = useCallback((lang: string) => setLanguage(lang), []);
 
-	const handleTranslationLanguageUpdate = (lang: string) => {
-		setTranslationLanguage(lang);
-	};
-
-	const handleGenerateClick = (isGenerating: boolean) => {
-		setGenerating(isGenerating);
-	};
-
-	const handleTranslatedDialiogUpdate = (dialog: string) => {
-		setTranslatedDialogue(dialog);
-	};
+	const handleTranslationLanguageUpdate = useCallback((lang: string) => setTranslationLanguage(lang), []);
 
 	const handleGenerateDialogue = async (
 		topic: string,
@@ -43,37 +31,36 @@ export default function Dialogue() {
 		language: string,
 		level: string,
 	) => {
-		handleGenerateClick(true);
+		setGenerating(true);
 		handleDialogueUpdate("");
-		handleTranslatedDialiogUpdate("");
-		// updateDialogue("");
+		setTranslatedDialogue("");
 
 		const topicSelected = customTopic || topic;
 
 		try {
 			const result = await runGoogleAi(topicSelected, tone, language as string, level);
 			handleDialogueUpdate(result.text as string);
-			handleTranslatedDialiogUpdate("");
+			setTranslatedDialogue("");
 			fetchAuthUser();
 		} catch (err) {
 			console.error(err);
 		} finally {
-			handleGenerateClick(false);
+			setGenerating(false);
 		}
 	};
 
 	const handleTranslationGenerateClick = async () => {
-		setTransletionGenerating(true);
+		setTranslationGenerating(true);
 
 		try {
 			const translation = await runGoogleAiTranslate(dialogue, language, translationLanguage);
-			handleTranslatedDialiogUpdate(translation.text as string);
+			setTranslatedDialogue(translation.text as string);
 
 			fetchAuthUser();
 		} catch (error) {
 			console.error(error);
 		} finally {
-			setTransletionGenerating(false);
+			setTranslationGenerating(false);
 		}
 	};
 

@@ -1,41 +1,38 @@
 "use client";
 
-import { runGoogleAi } from "@/app/(dialogue)/actions";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import LevelList from "@/components/level/level-list";
 import ToneList from "@/components/tones/tone-list";
 import TopicList from "@/components/topics/topic-list";
+import LanguageSelect from "../languages/language-list";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn, getLanguageName } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Play } from "lucide-react";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import LanguageSelect from "../languages/language-list";
-import { useUser } from "@/context/user";
-import { useRouter } from "next/navigation";
+import { getLanguageName } from "@/lib/utils";
 import type { AuthUser } from "@/lib/types";
 
-// Define a constant for the custom topic option to avoid magic strings
 const CUSTOM_TOPIC_OPTION = "Custom My custom topic";
 
-const formSchema = z.object({
-	topic: z.string().min(2, { message: "Please select a topic!" }),
-	customTopic: z.string(),
-	tone: z.string(),
-	level: z.string(),
-	language: z.string(),
-});
+const formSchema = z
+	.object({
+		topic: z.string().min(2, { message: "Please select a topic!" }),
+		customTopic: z.string(),
+		tone: z.string(),
+		level: z.string(),
+		language: z.string(),
+	})
+	.refine((data) => data.topic !== CUSTOM_TOPIC_OPTION || data.customTopic.trim() !== "", {
+		message: "Please enter your topic.",
+		path: ["customTopic"],
+	});
 
-export default function DialogueForm({
-	language,
-	generating,
-	onGenerateDialogueAction,
-	onLanguageUpdateAction,
-	user,
-}: {
+interface DialogueFormProps {
 	language: string;
 	generating: boolean;
 	onGenerateDialogueAction: (
@@ -47,7 +44,15 @@ export default function DialogueForm({
 	) => void;
 	onLanguageUpdateAction: (lang: string) => void;
 	user: AuthUser | null;
-}) {
+}
+
+export default function DialogueForm({
+	language,
+	generating,
+	onGenerateDialogueAction,
+	onLanguageUpdateAction,
+	user,
+}: DialogueFormProps) {
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -61,28 +66,20 @@ export default function DialogueForm({
 		},
 	});
 
-	// Use watch to conditionally render the custom topic input
 	const selectedTopic = form.watch("topic");
 	const showCustomTopicInput = selectedTopic === CUSTOM_TOPIC_OPTION;
 
 	const handleLanguageChange = (lang: string) => {
+		form.setValue("language", lang);
 		onLanguageUpdateAction(lang);
 	};
 
-	const handleGenerateDialogue = async (formData: z.infer<typeof formSchema>) => {
+	const handleGenerateDialogue = (formData: z.infer<typeof formSchema>) => {
 		const { topic, customTopic, tone, level } = formData;
 		const languageSelected = getLanguageName(language);
 
 		if (!user?.isPayed) {
 			router.push("/pricing");
-			return;
-		}
-
-		if ((topic === CUSTOM_TOPIC_OPTION && !customTopic) || (!topic && !customTopic)) {
-			form.setError("customTopic", {
-				type: "custom",
-				message: "Please enter your topic.",
-			});
 			return;
 		}
 
@@ -159,11 +156,11 @@ export default function DialogueForm({
 					<FormField
 						control={form.control}
 						name="language"
-						render={() => (
+						render={({ field }) => (
 							<FormItem>
 								<FormLabel className="text-md font-semibold">Language</FormLabel>
 								<FormControl>
-									<LanguageSelect size="md" value={language} onChange={handleLanguageChange} />
+									<LanguageSelect size="md" value={field.value} onChange={handleLanguageChange} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
