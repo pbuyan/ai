@@ -1,126 +1,118 @@
-# Next.js SaaS Starter
+# 🧠 AI-Powered Dialogue Generator (Language Learning App)
 
-This is a starter template for building a SaaS application using **Next.js** with support for authentication, Stripe integration for payments, and a dashboard for logged-in users.
+This project is a modern SaaS web application that helps users improve their communication skills in foreign languages. It allows users to generate contextual dialogues based on selected topics, tone, language, and proficiency level, using AI models (Google's PaLM/Gemini). It also supports instant translation to enhance learning outcomes.
 
-**Demo: [https://next-saas-start.vercel.app/](https://next-saas-start.vercel.app/)**
+---
 
-<details>
-  <summary>Why did I make this?</summary>
-  
-  In 2020, I made a course called "React 2025" which showed how to build a SaaS application with Next.js, Stripe, and other tools.
+## ✨ Features
 
-Well, it's almost 2025 and React 19 has brought so many amazing new features I didn't predict! This repo is a demonstration of the latest React and Next.js patterns. These patterns can drastically simplify some common tasks in building your SaaS, like building forms, talking to your database, and more.
+- ✅ Dynamic dialogue generation based on selected topic, tone, and difficulty
+- 🌍 Multilingual translation support
+- 👤 Subscription control (free vs. paid users)
+- 💅 Clean UI built with Tailwind CSS
+- 🔐 Authentication with Supabase
+- 📄 Form validation using Zod + React Hook Form
+- ⚡ Responsive design with serverless architecture
 
-For example, React now has built in hooks like `useActionState` to handle inline form errors and pending states. React Server Actions can replace a lot of boilerplate code needed to call an API Route from the client-side. And finally, the React `use` hook combined with Next.js makes it incredibly easy to build a powerful `useUser()` hook.
+---
 
-We're able to fetch the user from our Postgres database in the root layout, but _not_ await the `Promise`. Instead, we forward the `Promise` to a React context provider, where we can "unwrap" it and awaited the streamed in data. This means we can have the best of both worlds: easy code to fetch data from our database (e.g. `getUser()`) and a React hook we can use in Client Components (e.g. `useUser()`).
+## 🧰 Tech Stack
 
-Fun fact: the majority of the UI for this application was built with [v0](https://v0.dev) 🤯 [More details here](https://x.com/leeerob/status/1835777934361084316) if you want to learn about this repo.
+| Layer | Technology |
+|-------|------------|
+| Frontend | React, Next.js, TypeScript |
+| Styling | Tailwind CSS |
+| Backend | Supabase (Auth + DB), Server Actions |
+| AI Services | Google Genini API |
+| Forms | React Hook Form + Zod |
+| Deployment | Vercel |
 
-</details>
+---
 
-## Features
+## 🚀 Getting Started
 
-- Marketing landing page (`/`) with animated Terminal element
-- Pricing page (`/pricing`) which connects to Stripe Checkout
-- Dashboard pages with CRUD operations on users/teams
-- Basic RBAC with Owner and Member roles
-- Subscription management with Stripe Customer Portal
-- Email/password authentication with JWTs stored to cookies
-- Global middleware to protect logged-in routes
-- Local middleware to protect Server Actions or validate Zod schemas
-- Activity logging system for any user events
-
-## Tech Stack
-
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Database**: [Postgres](https://www.postgresql.org/)
-- **ORM**: [Drizzle](https://orm.drizzle.team/)
-- **Payments**: [Stripe](https://stripe.com/)
-- **UI Library**: [shadcn/ui](https://ui.shadcn.com/)
-
-## Getting Started
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/leerob/next-saas-starter
-cd next-saas-starter
+git clone https://github.com/yourusername/dialogue-app.git
+cd dialogue-app
+```
+
+### 2. Install dependencies
+
+```bash
 pnpm install
 ```
 
-## Running Locally
+### 3. Set up environment variables
 
-Use the included setup script to create your `.env` file:
+Create a `.env.local` file and add:
 
-```bash
-pnpm db:setup
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+GOOGLE_API_KEY=your_ai_key
 ```
 
-Then, run the database migrations and seed the database with a default user and team:
-
-```bash
-pnpm db:migrate
-pnpm db:seed
-```
-
-This will create the following user and team:
-
-- User: `test@test.com`
-- Password: `admin123`
-
-You can, of course, create new users as well through `/sign-up`.
-
-Finally, run the Next.js development server:
+### 4. Run the app locally
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
+---
 
-Optionally, you can listen for Stripe webhooks locally through their CLI to handle subscription change events:
+## 📁 Project Structure
 
-```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
+/public
+/src
+  /app
+    /dialogue
+        - dialogue.tsx            # UI layout and logic for dialogue generation
+        - dialogue-form.tsx       # Form with dynamic field logic
+  /components
+    - dialog-card.tsx             # Output card for displaying results
+    - tones/, topics/, levels/    # Selectable dropdowns
+  /context
+    - user.tsx                    # Authentication context
+  /lib
+    - utils.ts                    # Helper functions (e.g. language formatting)
 ```
 
-## Testing Payments
+---
 
-To test Stripe payments, use the following test card details:
+## 🧪 Example
+https://content-edit.vercel.app/
 
-- Card Number: `4242 4242 4242 4242`
-- Expiration: Any future date
-- CVC: Any 3-digit number
+Generate a friendly Spanish dialogue about "Ordering Coffee" for an intermediate learner:
 
-## Going to Production
+1. Choose the topic: `Food and Drink – Ordering Coffee`
+2. Set tone: `Friendly and Approachable`
+3. Level: `Intermediate`
+4. Language: `es-ES`
 
-When you're ready to deploy your SaaS application to production, follow these steps:
+The app will generate the dialogue and offer a translation in your preferred language.
 
-### Set up a production Stripe webhook
+---
 
-1. Go to the Stripe Dashboard and create a new webhook for your production environment.
-2. Set the endpoint URL to your production API route (e.g., `https://yourdomain.com/api/stripe/webhook`).
-3. Select the events you want to listen for (e.g., `checkout.session.completed`, `customer.subscription.updated`).
+## 🧱 Sustainable Coding Practices
 
-### Deploy to Vercel
+- Modular component-based architecture
+- Schema-based form validation
+- Context API for auth and global state
+- DRY principles and reusable logic
+- Clean separation of concerns between layout, data, and actions
 
-1. Push your code to a GitHub repository.
-2. Connect your repository to Vercel and deploy it.
-3. Follow the Vercel deployment process, which will guide you through setting up your project.
+---
 
-### Add environment variables
+## 📌 Contributions
 
-In your Vercel project settings (or during deployment), add all the necessary environment variables. Make sure to update the values for the production environment, including:
+While this project is not open source at the moment, I’ve built it with scalability in mind. It can easily integrate with CMS platforms like Drupal or WordPress by replacing the AI dialogue generator with real content endpoints.
 
-1. `BASE_URL`: Set this to your production domain.
-2. `STRIPE_SECRET_KEY`: Use your Stripe secret key for the production environment.
-3. `STRIPE_WEBHOOK_SECRET`: Use the webhook secret from the production webhook you created in step 1.
-4. `POSTGRES_URL`: Set this to your production database URL.
-5. `AUTH_SECRET`: Set this to a random string. `openssl rand -base64 32` will generate one.
+---
 
-## Other Templates
+## 🙋‍♂️ Author
 
-While this template is intentionally minimal and to be used as a learning resource, there are other paid versions in the community which are more full-featured:
-
-- https://achromatic.dev
-- https://shipfa.st
-- https://makerkit.dev
+**Piotr**  
+Front-End Developer  
