@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 // import { createClient } from "@supabase/auth-helpers-nextjs";
 import type { Session, User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
@@ -24,8 +24,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	const [session, setSession] = useState<Session | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+	const pathname = usePathname();
 
-	const fetchAuthUser = async () => {
+	const fetchAuthUser = useCallback(async () => {
 		try {
 			const authUser = await getAuthUser();
 			setUser(authUser ?? null);
@@ -33,16 +34,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 			console.error("Error fetching user from database:", error);
 			return null;
 		}
-	};
+	}, [pathname]);
+
+	useEffect(() => {
+		fetchAuthUser();
+	}, [pathname]);
 
 	useEffect(() => {
 		const getUser = async () => {
 			const { data: sessionData } = await supabase.auth.getSession();
 			setSession(sessionData?.session ?? null);
-
-			if (sessionData?.session?.user) {
-				fetchAuthUser();
-			}
 			setIsLoading(false);
 		};
 
@@ -51,8 +52,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 		// Listen for auth state changes
 		const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
 			setSession(session);
-			fetchAuthUser();
-			// setUser(session?.user ?? null);
 			setIsLoading(false);
 		});
 
